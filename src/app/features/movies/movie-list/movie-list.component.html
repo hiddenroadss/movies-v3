@@ -14,8 +14,15 @@
     <p>Release Date: {{ movie.releaseDate }}</p>
     <p>Rating: {{ movie.rating }}</p>
   </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/movies/details', movie.id]">
+      View Details
+    </button>
+  </mat-card-actions>
 </mat-card>
-
 <mat-paginator
   [length]="(movies$ | async)?.length"
   [pageSize]="pageSize"

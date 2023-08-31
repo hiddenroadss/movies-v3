@@ -1,11 +1,11 @@
 <main>
   <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
-<mat-drawer-container>
-  <mat-drawer #sidenav mode="over">
-    <app-side-menu></app-side-menu>
-  </mat-drawer>
-  <mat-drawer-content>
-    <router-outlet></router-outlet>
-  </mat-drawer-content>
-</mat-drawer-container>
+  <mat-drawer-container>
+    <mat-drawer #sidenav mode="over">
+      <app-side-menu></app-side-menu>
+    </mat-drawer>
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </main>

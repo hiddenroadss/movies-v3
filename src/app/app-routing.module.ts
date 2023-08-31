@@ -3,9 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./features/movies/movies.module').then(m => m.MoviesModule)
-  }
+    path: 'movies',
+    loadChildren: () =>
+      import('./features/movies/movies.module').then(m => m.MoviesModule),
+  },
+  {
+    path: '**',
+    redirectTo: 'movies',
+  },
 ];
 
 @NgModule({

@@ -10,28 +10,3 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
-
-app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-}
-
-mat-sidenav-container {
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-mat-sidenav {
-  width: 250px;
-}
-
-mat-sidenav-content {
-  padding-top: 64px; // Adjust this value based on the height of your app-header
-}

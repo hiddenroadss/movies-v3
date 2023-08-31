@@ -13,7 +13,7 @@ export class MovieListComponent {
   displayedMovies$ = this.movies$.pipe(
     map(movies => movies.slice(0, this.pageSize))
   );
-  pageSize = 5;
+  pageSize = 10;
 
   constructor(private movieService: MoviesService) {}
 
