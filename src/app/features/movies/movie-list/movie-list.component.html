@@ -1,4 +1,4 @@
-<mat-card *ngFor="let movie of movies$ | async" class="movie-card">
+<mat-card *ngFor="let movie of displayedMovies$ | async" class="movie-card">
   <img
     mat-card-image
     [src]="
@@ -15,3 +15,10 @@
     <p>Rating: {{ movie.rating }}</p>
   </mat-card-content>
 </mat-card>
+
+<mat-paginator
+  [length]="(movies$ | async)?.length"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="onPageChange($event)">
+</mat-paginator>

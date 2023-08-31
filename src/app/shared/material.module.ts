@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const modules = [
   MatToolbarModule,
@@ -13,6 +14,7 @@ const modules = [
   MatButtonModule,
   MatListModule,
   MatCardModule,
+  MatPaginatorModule,
 ];
 
 @NgModule({
