@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SideMenuComponent } from './side-menu.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('SideMenuComponent', () => {
   let component: SideMenuComponent;
@@ -8,7 +9,13 @@ describe('SideMenuComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SideMenuComponent]
+      imports: [SideMenuComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {},
+        },
+      ],
     });
     fixture = TestBed.createComponent(SideMenuComponent);
     component = fixture.componentInstance;

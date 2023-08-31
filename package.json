@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "start:server": "json-server --watch db.json",
     "start:both": "concurrently \"npm start\" \"npm run start:server\"",
-    "test": "ng test",
+    "test": "ng test --code-coverage --browsers Chrome",
+    "test:coverage": "ng test --no-watch --code-coverage --browsers ChromeHeadless",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "prepare": "husky install"
