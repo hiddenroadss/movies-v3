@@ -18,7 +18,6 @@ export class MovieBulkAddComponent {
       .filter(title => title.trim().length > 0);
     const movies: Movie[] = titles.map(title => ({ title }) as Movie);
     this.movieService.addMovies(movies).subscribe(() => {
-      alert('Movies added successfully');
       this.movieTitles = '';
     });
   }

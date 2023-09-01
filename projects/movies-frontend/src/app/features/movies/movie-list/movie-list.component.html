@@ -1,11 +1,9 @@
 <mat-card *ngFor="let movie of displayedMovies$ | async" class="movie-card">
   <img
     mat-card-image
-    [src]="
-      movie.poster ||
-      'https://via.placeholder.com/200x300?text=The+Shawshank+Redemption'
-    "
-    alt="{{ movie.title }} poster" />
+    [src]="movie.poster"
+    alt="{{ movie.title }} poster"
+    (error)="onImageError($event)" />
   <mat-card-header>
     <mat-card-title>{{ movie.title }}</mat-card-title>
     <mat-card-subtitle>Directed by: {{ movie.director }}</mat-card-subtitle>

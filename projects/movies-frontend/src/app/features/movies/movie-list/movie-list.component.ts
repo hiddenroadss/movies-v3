@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MoviesService } from '@core/services/api/movies.service';
 import { map } from 'rxjs';
@@ -7,6 +7,7 @@ import { map } from 'rxjs';
   selector: 'app-movie-list',
   templateUrl: './movie-list.component.html',
   styleUrls: ['./movie-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieListComponent {
   movies$ = this.movieService.getMovies();
@@ -23,5 +24,10 @@ export class MovieListComponent {
     this.displayedMovies$ = this.movies$.pipe(
       map(movies => movies.slice(startIndex, endIndex))
     );
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/images/default_poster.jpg';
   }
 }

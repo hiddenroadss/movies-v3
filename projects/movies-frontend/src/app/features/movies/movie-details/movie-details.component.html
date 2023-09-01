@@ -3,13 +3,7 @@
     <mat-card-title>{{ movie.title }}</mat-card-title>
     <mat-card-subtitle>Directed by: {{ movie.director }}</mat-card-subtitle>
   </mat-card-header>
-  <img
-    mat-card-image
-    [src]="
-      movie.poster ||
-      'https://via.placeholder.com/200x300?text=The+Shawshank+Redemption'
-    "
-    alt="{{ movie.title }} poster" />
+  <img mat-card-image [src]="movie.poster" alt="{{ movie.title }} poster" />
   <mat-card-content>
     <p>Release Date: {{ movie.releaseDate }}</p>
     <p>Rating: {{ movie.rating }}</p>
