@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:frontend": "cd projects/movies-frontend && npm run start",
-    "start:server": "cd projects/api && npm run start",
+    "start:server": "cd projects/api && npm run start:dev",
     "start:db": "docker-compose up",
     "start": "concurrently --prefix \"{name}\" --prefix-colors \"blue,green\" \"npm run start:db\" \"npm run start:frontend\" \"npm run start:server\"",
     "stop": "docker-compose down",
