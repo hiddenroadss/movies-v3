@@ -8,12 +8,14 @@
     "start:server": "cd projects/api && npm run start",
     "start:db": "docker-compose up",
     "start": "concurrently --prefix \"{name}\" --prefix-colors \"blue,green\" \"npm run start:db\" \"npm run start:frontend\" \"npm run start:server\"",
-    "stop": "docker-compose down"
+    "stop": "docker-compose down",
+    "seed": "ts-node projects/api/prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.1"
+    "concurrently": "^8.2.1",
+    "ts-node": "^10.9.1"
   }
 }
