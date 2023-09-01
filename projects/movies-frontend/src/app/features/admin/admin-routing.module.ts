@@ -1,11 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MovieBulkAddComponent } from './movie-bulk-add/movie-bulk-add.component';
+import { MovieDashboardComponent } from './movie-dashboard/movie-dashboard.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'add-bulk',
     component: MovieBulkAddComponent,
+  },
+  {
+    path: 'dashboard',
+    component: MovieDashboardComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
   },
 ];
 
