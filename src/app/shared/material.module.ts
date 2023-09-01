@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 const modules = [
   MatToolbarModule,
@@ -15,6 +17,8 @@ const modules = [
   MatListModule,
   MatCardModule,
   MatPaginatorModule,
+  MatFormFieldModule,
+  MatInputModule,
 ];
 
 @NgModule({

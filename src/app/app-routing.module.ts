@@ -8,6 +8,11 @@ const routes: Routes = [
       import('./features/movies/movies.module').then(m => m.MoviesModule),
   },
   {
+    path: 'admin',
+    loadChildren: () =>
+      import('./features/admin/admin.module').then(m => m.AdminModule),
+  },
+  {
     path: '**',
     redirectTo: 'movies',
   },

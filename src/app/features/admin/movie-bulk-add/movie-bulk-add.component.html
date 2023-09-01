@@ -1,0 +1,10 @@
+<div>
+  <h2>Add Movies</h2>
+  <mat-form-field appearance="outline">
+    <mat-label>Movie Titles (one per line)</mat-label>
+    <textarea matInput [(ngModel)]="movieTitles" rows="10"></textarea>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="addMovies()">
+    Add Movies
+  </button>
+</div>
