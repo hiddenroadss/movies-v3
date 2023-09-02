@@ -9,6 +9,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const modules = [
   MatToolbarModule,
@@ -21,6 +23,8 @@ const modules = [
   MatFormFieldModule,
   MatInputModule,
   MatTableModule,
+  MatSortModule,
+  MatProgressSpinnerModule,
 ];
 
 @NgModule({

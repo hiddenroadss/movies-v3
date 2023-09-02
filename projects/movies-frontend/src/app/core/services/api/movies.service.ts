@@ -11,8 +11,10 @@ export class MoviesService {
 
   constructor(private http: HttpClient) {}
 
-  getMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.apiUrl);
+  getMovies(options?: { page: number }): Observable<Movie[]> {
+    return this.http.get<Movie[]>(this.apiUrl, {
+      params: options,
+    });
   }
 
   getMovie(id: number): Observable<Movie> {
