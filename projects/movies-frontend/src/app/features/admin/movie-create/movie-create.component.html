@@ -1,0 +1,43 @@
+<!-- create-movie.component.html -->
+
+<h2>Create a new movie</h2>
+
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Director</mat-label>
+    <input matInput formControlName="director" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Release Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="releaseDatePicker"
+      formControlName="releaseDate" />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="releaseDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #releaseDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Tags</mat-label>
+    <mat-chip-grid #chipList>
+      <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">{{
+        tag
+      }}</mat-chip>
+    </mat-chip-grid>
+    <input
+      matInput
+      [matChipInputFor]="chipList"
+      [matChipInputAddOnBlur]="true"
+      (matChipInputTokenEnd)="addTag($event)" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Create Movie</button>
+</form>

@@ -1,0 +1,17 @@
+// admin-navigation.component.scss
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a.active {
+  text-decoration: underline;
+}

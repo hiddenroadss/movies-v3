@@ -7,12 +7,18 @@ import { SharedModule } from '@shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MovieDashboardComponent } from './movie-dashboard/movie-dashboard.component';
 import { EditMovieDialogComponent } from './shared/edit-movie-dialog/edit-movie-dialog.component';
+import { MovieCreateComponent } from './movie-create/movie-create.component';
+import { AdminComponent } from './admin.component';
+import { AdminNavigationComponent } from './shared/admin-navigation/admin-navigation.component';
 
 @NgModule({
   declarations: [
     MovieBulkAddComponent,
     MovieDashboardComponent,
     EditMovieDialogComponent,
+    MovieCreateComponent,
+    AdminComponent,
+    AdminNavigationComponent,
   ],
   imports: [
     CommonModule,
