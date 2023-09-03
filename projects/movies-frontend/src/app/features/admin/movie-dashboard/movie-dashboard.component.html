@@ -38,7 +38,11 @@
 
     <ng-container matColumnDef="tags">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Tags</mat-header-cell>
-      <mat-cell *matCellDef="let movie">{{ movie.tags }}</mat-cell>
+      <mat-cell *matCellDef="let movie">
+        <mat-chip-listbox>
+          <mat-chip *ngFor="let tag of movie.tags">{{ tag }}</mat-chip>
+        </mat-chip-listbox>
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="poster">

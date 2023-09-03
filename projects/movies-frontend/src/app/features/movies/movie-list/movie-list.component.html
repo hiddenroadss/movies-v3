@@ -10,7 +10,12 @@
   </mat-card-header>
   <mat-card-content>
     <p>Release Date: {{ movie.releaseDate }}</p>
-    <p>Rating: {{ movie.tags }}</p>
+    <p>
+      Tags:
+      <mat-chip-listbox>
+        <mat-chip *ngFor="let tag of movie.tags">{{ tag }}</mat-chip>
+      </mat-chip-listbox>
+    </p>
   </mat-card-content>
   <mat-card-actions>
     <button
