@@ -1,7 +1,7 @@
 <!-- <div><mat-spinner *ngIf="dataSource.isLoading$ | async"></mat-spinner></div> -->
 
 <section>
-  <mat-table [dataSource]="dataSource" matSort>
+  <mat-table [dataSource]="dataSource" matSort [trackBy]="trackById">
     <ng-container matColumnDef="title">
       <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
       <mat-cell *matCellDef="let movie">{{ movie.title }}</mat-cell>

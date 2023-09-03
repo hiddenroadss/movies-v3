@@ -9,6 +9,7 @@ import { MoviesService } from '@core/services/api/movies.service';
 import { Movie } from '@shared/types';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-movie-dashboard',
@@ -26,7 +27,9 @@ export class MovieDashboardComponent implements OnInit {
     'actions',
   ];
 
-  dataSource = new MatTableDataSource();
+  dataSource = new MatTableDataSource<Movie>();
+
+  reloadMovies$ = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -34,9 +37,11 @@ export class MovieDashboardComponent implements OnInit {
   constructor(private moviesService: MoviesService) {}
 
   ngOnInit() {
-    this.moviesService
-      .getMovies()
+    //TODO: add backend pagination
+    this.reloadMovies$
+      .pipe(switchMap(() => this.moviesService.getMovies()))
       .subscribe(movies => (this.dataSource.data = movies));
+    this.reloadMovies$.next();
   }
 
   ngAfterViewInit() {
@@ -49,6 +54,12 @@ export class MovieDashboardComponent implements OnInit {
   }
 
   deleteMovie(movieId: number): void {
-    // Implement the delete functionality here
+    this.moviesService
+      .deleteMovie(movieId)
+      .subscribe(() => this.reloadMovies$.next());
+  }
+
+  trackById(index: number, item: Movie) {
+    return item.id;
   }
 }
