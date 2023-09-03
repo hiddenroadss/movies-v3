@@ -26,7 +26,7 @@ export class MoviesService {
   }
 
   updateMovie(movie: Movie): Observable<Movie> {
-    return this.http.put<Movie>(`${this.apiUrl}/${movie.id}`, movie);
+    return this.http.patch<Movie>(`${this.apiUrl}/${movie.id}`, movie);
   }
 
   deleteMovie(id: number): Observable<void> {

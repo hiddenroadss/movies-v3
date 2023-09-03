@@ -9,8 +9,10 @@ import { MoviesService } from '@core/services/api/movies.service';
 import { Movie } from '@shared/types';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subject, switchMap, from, concatMap, toArray } from 'rxjs';
+import { Subject, switchMap, from, concatMap, toArray, filter } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
+import { EditMovieDialogComponent } from '../shared/edit-movie-dialog/edit-movie-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-movie-dashboard',
@@ -38,7 +40,10 @@ export class MovieDashboardComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private moviesService: MoviesService) {}
+  constructor(
+    private moviesService: MoviesService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     //TODO: add backend pagination
@@ -54,7 +59,20 @@ export class MovieDashboardComponent implements OnInit {
   }
 
   editMovie(movie: Movie): void {
-    // Implement the edit functionality here
+    const dialogRef = this.dialog.open(EditMovieDialogComponent, {
+      width: '400px',
+      data: movie,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(movie => !!movie),
+        switchMap(movie => this.moviesService.updateMovie(movie))
+      )
+      .subscribe(() => {
+        this.reloadMovies$.next();
+      });
   }
 
   deleteMovie(movieId?: number): void {
