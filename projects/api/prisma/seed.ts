@@ -3,6 +3,7 @@ import { PrismaClient, Movie } from '@prisma/client';
 const prisma = new PrismaClient();
 
 type MovieData = Omit<Movie, 'id'>;
+const tags = ['funny', 'terrifying', 'dramatic', 'thrilling'];
 
 function randomDate(start, end) {
   return new Date(
@@ -18,8 +19,10 @@ async function main() {
     title: `Movie ${index}`,
     director: `Director ${index}`,
     releaseDate: randomDate(startDate, endDate),
-    rating: Math.floor(Math.random() * (10 - 1 + 1)) + 1,
+    tags: tags,
     poster: 'https://example.com/movie1.jpg',
+    createdAt: randomDate(startDate, endDate),
+    updatedAt: randomDate(startDate, endDate),
   }));
 
   for (const movie of movies) {

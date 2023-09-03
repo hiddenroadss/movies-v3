@@ -20,12 +20,9 @@ export class EditMovieDialogComponent {
     //TODO: add typings
     this.editMovieForm = this.fb.group({
       title: [movie.title, Validators.required],
-      director: [movie.director, Validators.required],
-      releaseDate: [movie.releaseDate, Validators.required],
-      rating: [
-        movie.rating,
-        [Validators.required, Validators.min(0), Validators.max(10)],
-      ],
+      director: [movie.director],
+      releaseDate: [movie.releaseDate],
+      tags: [movie.tags.join(', ')],
     });
   }
 
@@ -36,6 +33,9 @@ export class EditMovieDialogComponent {
   onSave(): void {
     if (this.editMovieForm.valid) {
       const updatedMovieData = this.editMovieForm.value;
+      updatedMovieData.tags = updatedMovieData.tags
+        .split(',')
+        .map((tag: string) => tag.trim());
       // Update the movie with the new data from the form
       // and refresh the movie list
       this.dialogRef.close({

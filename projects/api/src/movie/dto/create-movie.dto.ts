@@ -11,7 +11,7 @@ export class CreateMovieDto {
   releaseDate?: Date;
 
   @ApiProperty({ required: false })
-  rating?: number;
+  tags?: string[];
 
   @ApiProperty({ required: false })
   poster?: string;

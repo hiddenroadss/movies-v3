@@ -36,11 +36,9 @@
       }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="rating">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Rating</mat-header-cell
-      >
-      <mat-cell *matCellDef="let movie">{{ movie.rating }}</mat-cell>
+    <ng-container matColumnDef="tags">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Tags</mat-header-cell>
+      <mat-cell *matCellDef="let movie">{{ movie.tags }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="poster">

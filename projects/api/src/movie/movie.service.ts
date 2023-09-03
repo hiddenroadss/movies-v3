@@ -18,7 +18,11 @@ export class MovieService {
   }
 
   findAll() {
-    return this.prisma.movie.findMany();
+    return this.prisma.movie.findMany({
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
   }
 
   findOne(id: number) {

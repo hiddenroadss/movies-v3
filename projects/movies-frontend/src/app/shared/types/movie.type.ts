@@ -3,6 +3,6 @@ export type Movie = {
   title: string;
   director: string;
   releaseDate: string;
-  rating: number;
+  tags: string[];
   poster: string;
 };

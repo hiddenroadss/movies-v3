@@ -26,7 +26,7 @@ export class MovieDashboardComponent implements OnInit {
     'title',
     'director',
     'releaseDate',
-    'rating',
+    'tags',
     'poster',
     'actions',
   ];
