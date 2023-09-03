@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const modules = [
   MatToolbarModule,
@@ -25,6 +26,7 @@ const modules = [
   MatTableModule,
   MatSortModule,
   MatProgressSpinnerModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({

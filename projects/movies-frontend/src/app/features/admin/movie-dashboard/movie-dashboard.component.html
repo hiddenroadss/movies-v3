@@ -2,6 +2,23 @@
 
 <section>
   <mat-table [dataSource]="dataSource" matSort [trackBy]="trackById">
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let movie">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(movie) : null"
+          [checked]="selection.isSelected(movie)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="title">
       <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
       <mat-cell *matCellDef="let movie">{{ movie.title }}</mat-cell>
@@ -34,13 +51,18 @@
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef
+        >Actions
+        <button
+          mat-icon-button
+          *ngIf="selection.selected.length"
+          (click)="deleteMovie()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-header-cell>
       <mat-cell *matCellDef="let movie">
         <button mat-icon-button (click)="editMovie(movie)">
           <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button (click)="deleteMovie(movie.id)">
-          <mat-icon>delete</mat-icon>
         </button>
       </mat-cell>
     </ng-container>
@@ -50,6 +72,6 @@
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
   <mat-paginator
-    [pageSize]="15"
+    [pageSize]="pageSize"
     [pageSizeOptions]="[10, 15, 25, 100]"></mat-paginator>
 </section>

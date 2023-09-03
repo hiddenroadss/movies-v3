@@ -9,7 +9,8 @@ import { MoviesService } from '@core/services/api/movies.service';
 import { Movie } from '@shared/types';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subject, switchMap } from 'rxjs';
+import { Subject, switchMap, from, concatMap, toArray } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-movie-dashboard',
@@ -19,6 +20,7 @@ import { Subject, switchMap } from 'rxjs';
 })
 export class MovieDashboardComponent implements OnInit {
   displayedColumns: string[] = [
+    'select',
     'title',
     'director',
     'releaseDate',
@@ -28,8 +30,10 @@ export class MovieDashboardComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<Movie>();
+  pageSize = 15;
 
   reloadMovies$ = new Subject<void>();
+  selection = new SelectionModel<Movie>(true, []);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -53,13 +57,39 @@ export class MovieDashboardComponent implements OnInit {
     // Implement the edit functionality here
   }
 
-  deleteMovie(movieId: number): void {
-    this.moviesService
-      .deleteMovie(movieId)
-      .subscribe(() => this.reloadMovies$.next());
+  deleteMovie(movieId?: number): void {
+    if (movieId) {
+      this.moviesService
+        .deleteMovie(movieId)
+        .subscribe(() => this.reloadMovies$.next());
+    } else {
+      from(this.selection.selected)
+        .pipe(
+          concatMap(movie => this.moviesService.deleteMovie(movie.id)),
+          toArray()
+        )
+        .subscribe(() => this.reloadMovies$.next());
+    }
   }
 
   trackById(index: number, item: Movie) {
     return item.id;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+    //TODO: select only a page, not all data
+    this.selection.select(...this.dataSource.data);
   }
 }
