@@ -19,7 +19,7 @@ export class MovieService {
       existingTags = await this.prisma.tag.findMany({
         where: {
           name: {
-            in: tags.map(tag => tag.name),
+            in: tags,
           },
         },
       });
@@ -69,21 +69,22 @@ export class MovieService {
     const { tags, ...movieWithoutTags } = updateMovieDto;
 
     let existingTags: Tag[] = [];
-    let newTags: Tag[] = [];
+    let newTags: string[] = [];
 
     if (tags) {
       // Fetch existing tags from the database
       existingTags = await this.prisma.tag.findMany({
         where: {
           name: {
-            in: tags.map(tag => tag.name),
+            in: tags,
           },
         },
       });
 
       // Find the tags that don't exist in the database
       newTags = tags.filter(
-        tag => !existingTags.some(existingTag => existingTag.name === tag.name)
+        tagName =>
+          !existingTags.some(existingTag => existingTag.name === tagName)
       );
     }
 
@@ -95,7 +96,7 @@ export class MovieService {
           ? {
               set: [], // Remove all existing tags
               connect: existingTags.map(tag => ({ id: tag.id })),
-              create: newTags.map(tag => ({ name: tag.name })),
+              create: newTags.map(tag => ({ name: tag })),
             }
           : undefined,
       },

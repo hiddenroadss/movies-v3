@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MoviesService } from '@core/services/api/movies.service';
-import { map } from 'rxjs';
+import { Movie } from '@shared/types';
+import { combineLatest, defer, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-movie-list',
@@ -11,10 +13,26 @@ import { map } from 'rxjs';
 })
 export class MovieListComponent {
   movies$ = this.movieService.getMovies();
-  displayedMovies$ = this.movies$.pipe(
-    map(movies => movies.slice(0, this.pageSize))
+  displayedMovies$ = defer(() =>
+    combineLatest(
+      this.movies$,
+      this.tagFilterControl.valueChanges.pipe(startWith(''))
+    ).pipe(
+      map(([movies, tagFilter]) => {
+        if (!tagFilter) {
+          return movies;
+        }
+        return movies.filter(movie =>
+          movie.tags.some(tag =>
+            tag.name.toLowerCase().includes(tagFilter.toLowerCase())
+          )
+        );
+      }),
+      map(movies => movies.slice(0, this.pageSize))
+    )
   );
   pageSize = 10;
+  tagFilterControl = new FormControl('');
 
   constructor(private movieService: MoviesService) {}
 
@@ -29,5 +47,9 @@ export class MovieListComponent {
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'assets/images/default_poster.jpg';
+  }
+
+  trackById(index: number, movie: Movie) {
+    return movie.id;
   }
 }
