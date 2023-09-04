@@ -8,7 +8,12 @@ describe('MovieController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MovieController],
-      providers: [MovieService],
+      providers: [
+        {
+          provide: MovieService,
+          useValue: {},
+        },
+      ],
     }).compile();
 
     controller = module.get<MovieController>(MovieController);

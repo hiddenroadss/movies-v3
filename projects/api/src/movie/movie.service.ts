@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { Tag } from '@prisma/client';
 
 @Injectable()
 export class MovieService {
@@ -18,7 +19,7 @@ export class MovieService {
       existingTags = await this.prisma.tag.findMany({
         where: {
           name: {
-            in: tags,
+            in: tags.map(tag => tag.name),
           },
         },
       });
@@ -39,6 +40,7 @@ export class MovieService {
             }
           : undefined,
       },
+      include: { tags: true },
     });
   }
 
@@ -66,22 +68,22 @@ export class MovieService {
   async update(id: number, updateMovieDto: UpdateMovieDto) {
     const { tags, ...movieWithoutTags } = updateMovieDto;
 
-    let existingTags = [];
-    let newTags = [];
+    let existingTags: Tag[] = [];
+    let newTags: Tag[] = [];
 
     if (tags) {
       // Fetch existing tags from the database
       existingTags = await this.prisma.tag.findMany({
         where: {
           name: {
-            in: tags,
+            in: tags.map(tag => tag.name),
           },
         },
       });
 
       // Find the tags that don't exist in the database
       newTags = tags.filter(
-        tagName => !existingTags.some(tag => tag.name === tagName)
+        tag => !existingTags.some(existingTag => existingTag.name === tag.name)
       );
     }
 
@@ -93,9 +95,12 @@ export class MovieService {
           ? {
               set: [], // Remove all existing tags
               connect: existingTags.map(tag => ({ id: tag.id })),
-              create: newTags.map(tagName => ({ name: tagName })),
+              create: newTags.map(tag => ({ name: tag.name })),
             }
           : undefined,
+      },
+      include: {
+        tags: true,
       },
     });
   }

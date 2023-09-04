@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MinLength, IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { Tag } from '@prisma/client';
+import {
+  MinLength,
+  IsString,
+  IsNotEmpty,
+  IsDate,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateMovieDto {
   @ApiProperty()
@@ -9,15 +16,19 @@ export class CreateMovieDto {
   title: string;
 
   @ApiProperty({ required: false })
+  @IsOptional()
   director?: string;
 
   @ApiProperty({ required: false })
   @IsDate()
+  @IsOptional()
   releaseDate?: Date;
 
   @ApiProperty({ required: false })
-  tags?: string[];
+  @IsOptional()
+  tags?: Tag[];
 
   @ApiProperty({ required: false })
+  @IsOptional()
   poster?: string;
 }
