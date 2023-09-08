@@ -13,6 +13,11 @@ const routes: Routes = [
       import('./features/admin/admin.module').then(m => m.AdminModule),
   },
   {
+    path: 'visual',
+    loadChildren: () =>
+      import('./features/visual/visual.module').then(m => m.VisualModule),
+  },
+  {
     path: '**',
     redirectTo: 'movies',
   },
