@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Movie } from '@shared/types';
+import { Movie, MovieFromDb } from '@shared/types';
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +21,16 @@ export class MoviesService {
     return this.http.get<Movie>(`${this.apiUrl}/${id}`);
   }
 
+  getMovieInfo(title: string) {
+    return this.http.get<MovieFromDb[]>(`${this.apiUrl}/find/${title}`);
+  }
+
   createMovie(movie: Movie): Observable<Movie> {
     return this.http.post<Movie>(this.apiUrl, movie);
   }
 
-  updateMovie(movie: Movie): Observable<Movie> {
-    return this.http.patch<Movie>(`${this.apiUrl}/${movie.id}`, movie);
+  updateMovie(movie: Partial<Movie>, id: number): Observable<Movie> {
+    return this.http.patch<Movie>(`${this.apiUrl}/${id}`, movie);
   }
 
   deleteMovie(id: number): Observable<void> {

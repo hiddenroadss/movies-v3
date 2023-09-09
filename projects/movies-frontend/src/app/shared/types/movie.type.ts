@@ -4,7 +4,7 @@ export type Movie = {
   id: number;
   title: string;
   director: string;
-  releaseDate: string;
+  releaseDate: Date;
   tags: Tag[];
   poster: string;
 };

@@ -68,7 +68,7 @@ export class MovieDashboardComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(movie => !!movie),
-        switchMap(movie => this.moviesService.updateMovie(movie))
+        switchMap(movie => this.moviesService.updateMovie(movie, movie.id))
       )
       .subscribe(() => {
         this.reloadMovies$.next();
