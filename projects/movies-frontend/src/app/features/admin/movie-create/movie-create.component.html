@@ -5,7 +5,21 @@
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <mat-label>Title</mat-label>
-    <input matInput formControlName="title" />
+    <input
+      matInput
+      [matAutocomplete]="titleAutocomplete"
+      formControlName="title" />
+    <mat-autocomplete #titleAutocomplete="matAutocomplete">
+      <mat-option
+        *ngFor="let suggestion of suggestions$ | async"
+        [value]="suggestion.title"
+        (click)="useSuggestion(suggestion)">
+        {{ suggestion.title }}
+        <span *ngIf="suggestion.release_date"
+          >| {{ suggestion.release_date | date }}</span
+        >
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
 
   <mat-form-field>
@@ -39,24 +53,35 @@
       (matChipInputTokenEnd)="addTag($event)" />
   </mat-form-field>
 
+  <mat-form-field>
+    <mat-label>Original Language</mat-label>
+    <input matInput formControlName="originalLanguage" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Original Title</mat-label>
+    <input matInput formControlName="originalTitle" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Popularity</mat-label>
+    <input matInput formControlName="popularity" type="number" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Vote Average</mat-label>
+    <input matInput formControlName="voteAverage" type="number" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Vote Count</mat-label>
+    <input matInput formControlName="voteCount" type="number" />
+  </mat-form-field>
+
   <button mat-raised-button color="primary" type="submit">Create Movie</button>
 </form>
-<div *ngIf="suggestions.length > 0">
-  <h3>Movie Suggestions</h3>
-  <mat-list>
-    <div *ngFor="let movie of suggestions">
-      <h4>{{ movie.title }}</h4>
-      <!-- <p matLine>Director: {{ movie.director }}</p>
-      <p matLine>Release Date: {{ movie.releaseDate | date }}</p>
-      <p matLine>
-        Tags:
-        <mat-chip *ngFor="let tag of movie.tags">
-          {{ tag }}
-        </mat-chip>
-      </p> -->
-      <button mat-mini-fab color="primary" (click)="useSuggestion(movie)">
-        Use
-      </button>
-    </div>
-  </mat-list>
-</div>

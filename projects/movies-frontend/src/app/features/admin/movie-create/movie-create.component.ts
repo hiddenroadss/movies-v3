@@ -1,12 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Router } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
-import { switchMap } from 'rxjs';
-import { ChangeDetectorRef } from '@angular/core';
+import {
+  Observable,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+} from 'rxjs';
 import { MovieFromDb } from '@shared/types';
-import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
 
 @Component({
   selector: 'app-movie-create',
@@ -14,39 +16,42 @@ import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
   styleUrls: ['./movie-create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MovieCreateComponent {
-  movieForm: FormGroup;
+export class MovieCreateComponent implements OnInit {
+  movieForm = new FormGroup({
+    title: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    director: new FormControl('', { nonNullable: true }),
+    releaseDate: new FormControl('', { nonNullable: true }),
+    originalLanguage: new FormControl('', { nonNullable: true }),
+    originalTitle: new FormControl('', { nonNullable: true }),
+    description: new FormControl('', { nonNullable: true }),
+    popularity: new FormControl(0, { nonNullable: true }),
+    voteAverage: new FormControl(0, { nonNullable: true }),
+    voteCount: new FormControl(0, { nonNullable: true }),
+  });
   tags: string[] = [];
-  suggestions: MovieFromDb[] = [];
+  suggestions$!: Observable<MovieFromDb[]>;
   id: number | undefined;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private moviesService: MoviesService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.movieForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      director: [''],
-      releaseDate: [''],
-    });
+  constructor(private moviesService: MoviesService) {}
+
+  ngOnInit() {
+    this.suggestions$ = this.movieForm.controls.title.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(title => this.moviesService.getMovieInfo(title))
+    );
   }
 
   onSubmit(): void {
     if (this.movieForm.valid) {
       const movieData = { ...this.movieForm.value, tags: this.tags };
       this.moviesService
-        .createMovie(movieData)
-        .pipe(
-          switchMap(data => {
-            this.id = data.id;
-            return this.moviesService.getMovieInfo(data.title);
-          })
-        )
+        .createMovie(movieData as any)
+
         .subscribe(data => {
-          this.suggestions = data;
-          this.cdr.detectChanges();
           // this.router.navigate(['/admin/dashboard']);
           // Navigate to the movie list or display a success message
         });
@@ -54,11 +59,17 @@ export class MovieCreateComponent {
   }
 
   useSuggestion(movie: MovieFromDb) {
-    this.moviesService
-      .updateMovie(mapMovieFromDbToMovie(movie), this.id!)
-      .subscribe(() => {
-        this.router.navigate(['/admin/dashboard']);
-      });
+    this.movieForm.setValue({
+      ...this.movieForm.getRawValue(),
+      title: movie.title,
+      releaseDate: movie.release_date,
+      description: movie.overview,
+      originalLanguage: movie.original_language,
+      originalTitle: movie.original_title,
+      voteAverage: movie.vote_average,
+      voteCount: movie.vote_count,
+      popularity: movie.popularity,
+    });
   }
 
   addTag(event: MatChipInputEvent): void {
