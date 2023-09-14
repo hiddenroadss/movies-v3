@@ -39,7 +39,7 @@
     <mat-datepicker #releaseDatePicker></mat-datepicker>
   </mat-form-field>
 
-  <mat-form-field>
+  <!-- <mat-form-field>
     <mat-label>Tags</mat-label>
     <mat-chip-grid #chipList>
       <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">{{
@@ -51,36 +51,11 @@
       [matChipInputFor]="chipList"
       [matChipInputAddOnBlur]="true"
       (matChipInputTokenEnd)="addTag($event)" />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Original Language</mat-label>
-    <input matInput formControlName="originalLanguage" />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Original Title</mat-label>
-    <input matInput formControlName="originalTitle" />
-  </mat-form-field>
+  </mat-form-field> -->
 
   <mat-form-field>
     <mat-label>Description</mat-label>
     <textarea matInput formControlName="description"></textarea>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Popularity</mat-label>
-    <input matInput formControlName="popularity" type="number" />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Vote Average</mat-label>
-    <input matInput formControlName="voteAverage" type="number" />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Vote Count</mat-label>
-    <input matInput formControlName="voteCount" type="number" />
   </mat-form-field>
 
   <button mat-raised-button color="primary" type="submit">Create Movie</button>

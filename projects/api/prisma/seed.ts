@@ -7,7 +7,7 @@ const tags = ['funny', 'terrifying', 'dramatic', 'thrilling'];
 
 function randomDate(start, end) {
   return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
   );
 }
 
@@ -23,6 +23,7 @@ async function main() {
     poster: 'https://example.com/movie1.jpg',
     createdAt: randomDate(startDate, endDate),
     updatedAt: randomDate(startDate, endDate),
+    description: 'SOME RANDOM',
   }));
 
   for (const movie of movies) {
@@ -33,7 +34,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error(e);
     process.exit(1);
   })

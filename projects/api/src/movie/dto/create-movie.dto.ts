@@ -23,4 +23,9 @@ export class CreateMovieDto {
   @ApiProperty({ required: false })
   @IsOptional()
   poster?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  description?: string;
 }

@@ -25,7 +25,7 @@ export class MoviesService {
     return this.http.get<MovieFromDb[]>(`${this.apiUrl}/find/${title}`);
   }
 
-  createMovie(movie: Movie): Observable<Movie> {
+  createMovie(movie: Partial<Movie>): Observable<Movie> {
     return this.http.post<Movie>(this.apiUrl, movie);
   }
 

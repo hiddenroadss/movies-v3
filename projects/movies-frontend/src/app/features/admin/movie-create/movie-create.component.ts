@@ -8,7 +8,7 @@ import {
   distinctUntilChanged,
   switchMap,
 } from 'rxjs';
-import { MovieFromDb } from '@shared/types';
+import { Movie, MovieFromDb, Tag } from '@shared/types';
 
 @Component({
   selector: 'app-movie-create',
@@ -24,14 +24,9 @@ export class MovieCreateComponent implements OnInit {
     }),
     director: new FormControl('', { nonNullable: true }),
     releaseDate: new FormControl('', { nonNullable: true }),
-    originalLanguage: new FormControl('', { nonNullable: true }),
-    originalTitle: new FormControl('', { nonNullable: true }),
     description: new FormControl('', { nonNullable: true }),
-    popularity: new FormControl(0, { nonNullable: true }),
-    voteAverage: new FormControl(0, { nonNullable: true }),
-    voteCount: new FormControl(0, { nonNullable: true }),
   });
-  tags: string[] = [];
+  tags: Tag[] = [];
   suggestions$!: Observable<MovieFromDb[]>;
   id: number | undefined;
 
@@ -47,9 +42,13 @@ export class MovieCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.movieForm.valid) {
-      const movieData = { ...this.movieForm.value, tags: this.tags };
+      const movieData: Partial<Movie> = {
+        ...this.movieForm.getRawValue(),
+        tags: this.tags,
+        releaseDate: new Date(this.movieForm.controls.releaseDate.value),
+      };
       this.moviesService
-        .createMovie(movieData as any)
+        .createMovie(movieData)
 
         .subscribe(data => {
           // this.router.navigate(['/admin/dashboard']);
@@ -64,32 +63,6 @@ export class MovieCreateComponent implements OnInit {
       title: movie.title,
       releaseDate: movie.release_date,
       description: movie.overview,
-      originalLanguage: movie.original_language,
-      originalTitle: movie.original_title,
-      voteAverage: movie.vote_average,
-      voteCount: movie.vote_count,
-      popularity: movie.popularity,
     });
-  }
-
-  addTag(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      this.tags.push(value.trim());
-    }
-
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  removeTag(tag: string): void {
-    const index = this.tags.indexOf(tag);
-
-    if (index >= 0) {
-      this.tags.splice(index, 1);
-    }
   }
 }

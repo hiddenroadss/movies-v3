@@ -6,5 +6,6 @@ export type Movie = {
   director: string;
   releaseDate: Date;
   tags: Tag[];
+  description: string;
   poster: string;
 };
