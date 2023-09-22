@@ -5,14 +5,12 @@ import { MovieDashboardComponent } from './movie-dashboard/movie-dashboard.compo
 import { EditMovieDialogComponent } from './shared/edit-movie-dialog/edit-movie-dialog.component';
 import { MovieCreateComponent } from './movie-create/movie-create.component';
 import { AdminComponent } from './admin.component';
-import { AdminNavigationComponent } from './shared/admin-navigation/admin-navigation.component';
 
 const components = [
   MovieBulkAddComponent,
   MovieCreateComponent,
   MovieDashboardComponent,
   EditMovieDialogComponent,
-  AdminNavigationComponent,
   AdminComponent,
 ];
 

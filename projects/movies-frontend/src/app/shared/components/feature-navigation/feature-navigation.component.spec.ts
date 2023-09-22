@@ -1,12 +1,12 @@
 import { createComponentFactory, Spectator } from '@ngneat/spectator';
-import { AdminNavigationComponent } from './admin-navigation.component';
+import { FeatureNavigationComponent } from './feature-navigation.component';
 import { ActivatedRoute } from '@angular/router';
 
-describe('AdminNavigationComponent', () => {
-  let spectator: Spectator<AdminNavigationComponent>;
+describe('FeatureNavigationComponent', () => {
+  let spectator: Spectator<FeatureNavigationComponent>;
 
   const createComponent = createComponentFactory({
-    component: AdminNavigationComponent,
+    component: FeatureNavigationComponent,
     providers: [
       {
         provide: ActivatedRoute,
