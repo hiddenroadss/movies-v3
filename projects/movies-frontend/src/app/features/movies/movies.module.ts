@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Route, RouterModule } from '@angular/router';
 import { MovieListComponent } from './movie-list/movie-list.component';
-import { SharedModule } from '@shared/shared.module';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
-import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Route[] = [
   {
@@ -18,12 +15,10 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [MovieListComponent, MovieDetailsComponent],
   imports: [
-    CommonModule,
     RouterModule.forChild(routes),
-    SharedModule,
-    ReactiveFormsModule,
+    MovieListComponent,
+    MovieDetailsComponent,
   ],
 })
 export class MoviesModule {}

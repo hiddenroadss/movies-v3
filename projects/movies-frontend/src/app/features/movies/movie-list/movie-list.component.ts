@@ -1,7 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
+import { RouterModule } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
+import { MaterialModule } from '@shared/material.module';
 import { Movie } from '@shared/types';
 import { combineLatest, defer, map, startWith } from 'rxjs';
 
@@ -10,6 +13,8 @@ import { combineLatest, defer, map, startWith } from 'rxjs';
   templateUrl: './movie-list.component.html',
   styleUrls: ['./movie-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MaterialModule, CommonModule, RouterModule, ReactiveFormsModule],
 })
 export class MovieListComponent {
   movies$ = this.movieService.getMovies();

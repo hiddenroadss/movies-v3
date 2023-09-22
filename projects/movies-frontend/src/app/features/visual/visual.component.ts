@@ -1,11 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MoviesService } from '@core/services/api/movies.service';
+import { PieChartComponent } from '@shared/components/pie-chart/pie-chart.component';
 
 @Component({
   selector: 'app-visual',
   templateUrl: './visual.component.html',
   styleUrls: ['./visual.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [PieChartComponent, CommonModule],
 })
 export class VisualComponent {
   tagStats: { name: string; value: number }[] = [];
