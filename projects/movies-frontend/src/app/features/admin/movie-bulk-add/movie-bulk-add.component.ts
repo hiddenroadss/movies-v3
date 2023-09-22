@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MoviesService } from '@core/services/api/movies.service';
+import { MaterialModule } from '@shared/material.module';
 import { Movie } from '@shared/types';
 
 @Component({
   selector: 'app-movie-bulk-add',
   templateUrl: './movie-bulk-add.component.html',
   styleUrls: ['./movie-bulk-add.component.scss'],
+  standalone: true,
+  imports: [FormsModule, MaterialModule],
 })
 export class MovieBulkAddComponent {
   movieTitles = '';

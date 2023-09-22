@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MoviesService } from '@core/services/api/movies.service';
 import {
   Observable,
@@ -9,12 +13,16 @@ import {
   switchMap,
 } from 'rxjs';
 import { Movie, MovieFromDb, Tag } from '@shared/types';
+import { MaterialModule } from '@shared/material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-movie-create',
   templateUrl: './movie-create.component.html',
   styleUrls: ['./movie-create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MaterialModule, ReactiveFormsModule, CommonModule],
 })
 export class MovieCreateComponent implements OnInit {
   movieForm = new FormGroup({

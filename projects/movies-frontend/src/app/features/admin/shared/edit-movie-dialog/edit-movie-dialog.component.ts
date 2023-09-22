@@ -1,6 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MaterialModule } from '@shared/material.module';
 import { Movie } from '@shared/types';
 
 @Component({
@@ -8,6 +15,8 @@ import { Movie } from '@shared/types';
   templateUrl: './edit-movie-dialog.component.html',
   styleUrls: ['./edit-movie-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MaterialModule, ReactiveFormsModule, CommonModule],
 })
 export class EditMovieDialogComponent {
   editMovieForm: FormGroup;

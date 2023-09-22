@@ -13,12 +13,16 @@ import { Subject, switchMap, from, concatMap, toArray, filter } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EditMovieDialogComponent } from '../shared/edit-movie-dialog/edit-movie-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MaterialModule } from '@shared/material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-movie-dashboard',
   templateUrl: './movie-dashboard.component.html',
   styleUrls: ['./movie-dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MaterialModule, CommonModule],
 })
 export class MovieDashboardComponent implements OnInit {
   displayedColumns: string[] = [

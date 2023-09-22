@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AdminNavigationComponent } from './shared/admin-navigation/admin-navigation.component';
 
 @Component({
   selector: 'app-admin',
@@ -8,5 +10,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   `,
   styles: [''],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [RouterModule, AdminNavigationComponent],
 })
 export class AdminComponent {}

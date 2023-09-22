@@ -11,21 +11,23 @@ import { MovieCreateComponent } from './movie-create/movie-create.component';
 import { AdminComponent } from './admin.component';
 import { AdminNavigationComponent } from './shared/admin-navigation/admin-navigation.component';
 
+const components = [
+  MovieBulkAddComponent,
+  MovieCreateComponent,
+  MovieDashboardComponent,
+  EditMovieDialogComponent,
+  AdminNavigationComponent,
+  AdminComponent,
+];
+
 @NgModule({
-  declarations: [
-    MovieBulkAddComponent,
-    MovieDashboardComponent,
-    EditMovieDialogComponent,
-    MovieCreateComponent,
-    AdminComponent,
-    AdminNavigationComponent,
-  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    ...components,
   ],
 })
 export class AdminModule {}
