@@ -1,21 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 import { VisualComponent } from './visual.component';
+import { MoviesService } from '@core/services/api/movies.service';
+import { of } from 'rxjs';
 
 describe('VisualComponent', () => {
-  let component: VisualComponent;
-  let fixture: ComponentFixture<VisualComponent>;
+  let spectator: Spectator<VisualComponent>;
+
+  const createComponent = createComponentFactory({
+    component: VisualComponent,
+    providers: [
+      { provide: MoviesService, useValue: { getMovies: () => of([]) } },
+    ],
+  });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [VisualComponent]
-    });
-    fixture = TestBed.createComponent(VisualComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    spectator = createComponent();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator.component).toBeTruthy();
   });
 });

@@ -1,21 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 import { AdminComponent } from './admin.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AdminComponent', () => {
-  let component: AdminComponent;
-  let fixture: ComponentFixture<AdminComponent>;
+  let spectator: Spectator<AdminComponent>;
+
+  const createComponent = createComponentFactory({
+    component: AdminComponent,
+    providers: [
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: {
+            paramMap: new Map(),
+          },
+        },
+      },
+    ],
+  });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [AdminComponent]
-    });
-    fixture = TestBed.createComponent(AdminComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    spectator = createComponent();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator.component).toBeTruthy();
   });
 });

@@ -31,7 +31,7 @@ export class EditMovieDialogComponent {
       title: [movie.title, Validators.required],
       director: [movie.director],
       releaseDate: [movie.releaseDate],
-      tags: [movie.tags.join(', ')],
+      tags: [movie.tags.map(tag => tag.name).join(', ')],
     });
   }
 

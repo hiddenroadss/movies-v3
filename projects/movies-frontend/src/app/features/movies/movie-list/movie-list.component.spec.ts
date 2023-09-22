@@ -1,21 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 import { MovieListComponent } from './movie-list.component';
+import { MoviesService } from '@core/services/api/movies.service';
+import { of } from 'rxjs';
 
 describe('MovieListComponent', () => {
-  let component: MovieListComponent;
-  let fixture: ComponentFixture<MovieListComponent>;
+  let spectator: Spectator<MovieListComponent>;
+
+  const createComponent = createComponentFactory({
+    component: MovieListComponent,
+    providers: [
+      { provide: MoviesService, useValue: { getMovies: () => of([]) } },
+    ],
+  });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [MovieListComponent],
-    });
-    fixture = TestBed.createComponent(MovieListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    spectator = createComponent();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator.component).toBeTruthy();
   });
 });

@@ -8,7 +8,7 @@ import { AdminNavigationComponent } from './shared/admin-navigation/admin-naviga
     <app-admin-navigation></app-admin-navigation>
     <router-outlet></router-outlet>
   `,
-  styles: [''],
+  styleUrls: ['./admin.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [RouterModule, AdminNavigationComponent],

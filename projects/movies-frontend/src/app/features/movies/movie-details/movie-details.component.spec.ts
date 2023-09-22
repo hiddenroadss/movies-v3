@@ -1,21 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 import { MovieDetailsComponent } from './movie-details.component';
+import { MoviesService } from '@core/services/api/movies.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('MovieDetailsComponent', () => {
-  let component: MovieDetailsComponent;
-  let fixture: ComponentFixture<MovieDetailsComponent>;
+  let spectator: Spectator<MovieDetailsComponent>;
+
+  const createComponent = createComponentFactory({
+    component: MovieDetailsComponent,
+    mocks: [MoviesService],
+    providers: [
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: {
+            params: {
+              id: '1',
+            },
+          },
+        },
+      },
+    ],
+  });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [MovieDetailsComponent],
-    });
-    fixture = TestBed.createComponent(MovieDetailsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    spectator = createComponent();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator.component).toBeTruthy();
   });
 });
