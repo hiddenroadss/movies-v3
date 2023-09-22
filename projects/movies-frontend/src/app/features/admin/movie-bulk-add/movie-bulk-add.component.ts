@@ -21,7 +21,12 @@ export class MovieBulkAddComponent {
       .split(/[\n,]+/)
       .map(title => title.trim().replace(/(^["']|["']$)/g, ''))
       .filter(title => title.length > 0);
-    const movies: Movie[] = titles.map(title => ({ title }) as Movie);
+
+    if (titles.length === 0) {
+      this.movieTitles = '';
+      return;
+    }
+    const movies: Pick<Movie, 'title'>[] = titles.map(title => ({ title }));
     this.movieService.addMovies(movies).subscribe(() => {
       this.movieTitles = '';
     });

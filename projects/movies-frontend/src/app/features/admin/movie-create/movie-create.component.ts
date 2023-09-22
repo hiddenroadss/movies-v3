@@ -66,8 +66,7 @@ export class MovieCreateComponent implements OnInit {
   }
 
   useSuggestion(movie: MovieFromDb) {
-    this.movieForm.setValue({
-      ...this.movieForm.getRawValue(),
+    this.movieForm.patchValue({
       title: movie.title,
       releaseDate: movie.release_date,
       description: movie.overview,

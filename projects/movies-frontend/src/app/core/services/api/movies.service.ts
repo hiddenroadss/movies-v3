@@ -37,10 +37,7 @@ export class MoviesService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  addMovies(movies: Movie[]): Observable<Pick<Movie, 'title'>[]> {
-    return this.http.post<Pick<Movie, 'title'>[]>(
-      this.apiUrl + '/bulk',
-      movies
-    );
+  addMovies(movies: Pick<Movie, 'title'>[]): Observable<Movie[]> {
+    return this.http.post<Movie[]>(this.apiUrl + '/bulk', movies);
   }
 }
