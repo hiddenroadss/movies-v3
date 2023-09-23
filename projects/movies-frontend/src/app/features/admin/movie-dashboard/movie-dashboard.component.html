@@ -7,14 +7,16 @@
         <mat-checkbox
           (change)="$event ? toggleAllRows() : null"
           [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()">
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          data-test="select-all-checkbox">
         </mat-checkbox>
       </mat-header-cell>
       <mat-cell *matCellDef="let movie">
         <mat-checkbox
           (click)="$event.stopPropagation()"
           (change)="$event ? selection.toggle(movie) : null"
-          [checked]="selection.isSelected(movie)">
+          [checked]="selection.isSelected(movie)"
+          data-test="select-checkbox">
         </mat-checkbox>
       </mat-cell>
     </ng-container>
@@ -58,12 +60,16 @@
         <button
           mat-icon-button
           *ngIf="selection.selected.length"
-          (click)="deleteMovie()">
+          (click)="deleteMovie()"
+          data-test="delete-button">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-header-cell>
       <mat-cell *matCellDef="let movie">
-        <button mat-icon-button (click)="editMovie(movie)">
+        <button
+          mat-icon-button
+          (click)="editMovie(movie)"
+          data-test="edit-button">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-cell>
