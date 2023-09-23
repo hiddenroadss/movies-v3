@@ -12,7 +12,7 @@ import { MaterialModule } from '@shared/material.module';
   imports: [MaterialModule, CommonModule],
 })
 export class MovieDetailsComponent {
-  movie$ = this.moviesService.getMovie(
+  movie$ = this.moviesService.getMovieById(
     Number(this.route.snapshot.params['id'])
   );
   constructor(

@@ -1,88 +1,97 @@
+import { HttpTestingController } from '@angular/common/http/testing';
 import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
-import { createServiceFactory, SpectatorService } from '@ngneat/spectator';
+  createHttpFactory,
+  createServiceFactory,
+  HttpMethod,
+  SpectatorHttp,
+  SpectatorService,
+} from '@ngneat/spectator';
 import { MoviesService } from './movies.service';
+import { moviesStub } from 'src/app/testing/stubs/movies';
+import { movieFromDbStub } from 'src/app/testing/stubs/movie-from-db';
 
 describe('MoviesService', () => {
-  let spectator: SpectatorService<MoviesService>;
-  let httpMock: HttpTestingController;
+  let spectator: SpectatorHttp<MoviesService>;
 
-  const createService = createServiceFactory({
+  const createHttp = createHttpFactory({
     service: MoviesService,
-    imports: [HttpClientTestingModule],
   });
 
   beforeEach(() => {
-    spectator = createService();
-    httpMock = spectator.inject(HttpTestingController);
-  });
-
-  afterEach(() => {
-    httpMock.verify();
+    spectator = createHttp();
   });
 
   it('should be created', () => {
     expect(spectator.service).toBeTruthy();
   });
 
-  // it('should get movies', () => {
-  //   const movies = [
-  //     { id: 1, title: 'Movie 1' },
-  //     { id: 2, title: 'Movie 2' },
-  //   ];
+  it('should get movies', () => {
+    const movies = moviesStub;
 
-  //   spectator.service.getMovies().subscribe(data => {
-  //     expect(data).toEqual(movies);
-  //   });
+    spectator.service.getMovies().subscribe(data => {
+      expect(data).toEqual(movies);
+    });
 
-  //   const req = httpMock.expectOne('/api/movies');
-  //   expect(req.request.method).toBe('GET');
-  //   req.flush(movies);
-  // });
+    spectator.expectOne('http://localhost:3000/movies', HttpMethod.GET);
+  });
 
-  // it('should get a movie by id', () => {
-  //   const movie = { id: 1, title: 'Movie 1' };
+  it('should get a movie by id', () => {
+    const movie = moviesStub[0];
 
-  //   spectator.service.getMovieById(1).subscribe(data => {
-  //     expect(data).toEqual(movie);
-  //   });
+    spectator.service.getMovieById(1).subscribe(data => {
+      expect(data).toEqual(movie);
+    });
 
-  //   const req = httpMock.expectOne('/api/movies/1');
-  //   expect(req.request.method).toBe('GET');
-  //   req.flush(movie);
-  // });
+    spectator.expectOne('http://localhost:3000/movies/1', HttpMethod.GET);
+  });
 
-  // it('should add a movie', () => {
-  //   const movie = { title: 'Movie 1' };
+  it('should add a movie', () => {
+    const movie = moviesStub[0];
 
-  //   spectator.service.addMovie(movie).subscribe(data => {
-  //     expect(data).toEqual(movie);
-  //   });
+    spectator.service.createMovie(movie).subscribe(data => {
+      expect(data).toEqual(movie);
+    });
 
-  //   const req = httpMock.expectOne('/api/movies');
-  //   expect(req.request.method).toBe('POST');
-  //   req.flush(movie);
-  // });
+    spectator.expectOne('http://localhost:3000/movies', HttpMethod.POST);
+  });
 
-  // it('should update a movie', () => {
-  //   const movie = { id: 1, title: 'Movie 1' };
+  it('should update a movie', () => {
+    const movie = moviesStub[0];
 
-  //   spectator.service.updateMovie(movie).subscribe(data => {
-  //     expect(data).toEqual(movie);
-  //   });
+    spectator.service.updateMovie(movie, movie.id).subscribe(data => {
+      expect(data).toEqual(movie);
+    });
 
-  //   const req = httpMock.expectOne('/api/movies/1');
-  //   expect(req.request.method).toBe('PUT');
-  //   req.flush(movie);
-  // });
+    spectator.expectOne('http://localhost:3000/movies/1', HttpMethod.PATCH);
+  });
 
-  // it('should delete a movie', () => {
-  //   spectator.service.deleteMovie(1).subscribe();
+  it('should delete a movie', () => {
+    spectator.service.deleteMovie(1).subscribe();
 
-  //   const req = httpMock.expectOne('/api/movies/1');
-  //   expect(req.request.method).toBe('DELETE');
-  //   req.flush({});
-  // });
+    spectator.expectOne('http://localhost:3000/movies/1', HttpMethod.DELETE);
+  });
+
+  it('should get movie info by title', () => {
+    const title = 'The Shawshank Redemption';
+    const movieFromDb = [movieFromDbStub];
+
+    spectator.service.getMovieInfo(title).subscribe(data => {
+      expect(data).toEqual(movieFromDb);
+    });
+
+    spectator.expectOne(
+      `http://localhost:3000/movies/find/${title}`,
+      HttpMethod.GET
+    );
+  });
+
+  it('should add movies', () => {
+    const movies = moviesStub.map(movie => ({ title: movie.title }));
+
+    spectator.service.addMovies(movies).subscribe(data => {
+      expect(data).toEqual(moviesStub);
+    });
+
+    spectator.expectOne(`http://localhost:3000/movies/bulk`, HttpMethod.POST);
+  });
 });
