@@ -5,24 +5,30 @@
       <input
         matInput
         [formControl]="tagFilterControl"
-        placeholder="Enter tag name" />
+        placeholder="Enter tag name"
+        data-test="tag-filter" />
     </mat-form-field>
   </div>
 
   <mat-card
     *ngFor="let movie of displayedMovies$ | async; trackBy: trackById"
-    class="movie-card">
+    class="movie-card"
+    data-test="movie-card">
     <img
       mat-card-image
       [src]="movie.poster"
       alt="{{ movie.title }} poster"
       (error)="onImageError($event)" />
     <mat-card-header>
-      <mat-card-title>{{ movie.title }}</mat-card-title>
-      <mat-card-subtitle>Directed by: {{ movie.director }}</mat-card-subtitle>
+      <mat-card-title data-test="movie-title">{{ movie.title }}</mat-card-title>
+      <mat-card-subtitle data-test="movie-director"
+        >Directed by: {{ movie.director }}</mat-card-subtitle
+      >
     </mat-card-header>
     <mat-card-content>
-      <p>Release Date: {{ movie.releaseDate }}</p>
+      <p data-test="movie-release-date">
+        Release Date: {{ movie.releaseDate }}
+      </p>
       <p>
         Tags:
         <mat-chip-listbox>
