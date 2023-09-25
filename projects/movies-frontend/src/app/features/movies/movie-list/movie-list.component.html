@@ -16,7 +16,7 @@
     data-test="movie-card">
     <img
       mat-card-image
-      [src]="movie.poster"
+      [src]="'http://localhost:3000/' + movie.poster"
       alt="{{ movie.title }} poster"
       (error)="onImageError($event)" />
     <mat-card-header>

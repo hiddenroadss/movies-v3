@@ -40,4 +40,14 @@ export class MoviesService {
   addMovies(movies: Pick<Movie, 'title'>[]): Observable<Movie[]> {
     return this.http.post<Movie[]>(this.apiUrl + '/bulk', movies);
   }
+
+  uploadPoster(poster: File): Observable<{ file: string }> {
+    const formData = new FormData();
+    formData.append('poster', poster);
+
+    return this.http.post<{ file: string }>(
+      'http://localhost:3000/movies/poster/upload',
+      formData
+    );
+  }
 }

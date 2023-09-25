@@ -3,7 +3,10 @@
     <mat-card-title>{{ movie.title }}</mat-card-title>
     <mat-card-subtitle>Directed by: {{ movie.director }}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image [src]="movie.poster" alt="{{ movie.title }} poster" />
+  <img
+    mat-card-image
+    [src]="'http://localhost:3000/' + movie.poster"
+    alt="{{ movie.title }} poster" />
   <mat-card-content>
     <p>Release Date: {{ movie.releaseDate }}</p>
   </mat-card-content>

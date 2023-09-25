@@ -58,5 +58,15 @@
     <textarea matInput formControlName="description"></textarea>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit">Create Movie</button>
+  <!-- Add this line where you want the image upload control -->
+  <app-image-upload
+    (imageSelected)="onImageSelected($event)"></app-image-upload>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="movieForm.invalid">
+    Create Movie
+  </button>
 </form>

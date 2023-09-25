@@ -6,12 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  Res,
+  BadRequestException,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { MoviesDbService } from './movies-db/movies-db.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('movies')
 @ApiTags('Movies')
@@ -54,5 +59,17 @@ export class MovieController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.movieService.remove(+id);
+  }
+
+  @Post('poster/upload')
+  @UseInterceptors(FileInterceptor('poster'))
+  async uploadPoster(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      return new BadRequestException('No file was uploaded');
+    }
+
+    return {
+      file: file.filename,
+    };
   }
 }

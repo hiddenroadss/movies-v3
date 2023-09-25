@@ -1,0 +1,12 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<div class="image-upload-container">
+  <div
+    class="image-preview-container"
+    [ngClass]="{ 'uploaded-image': imageUrl }"
+    (click)="openInputFile()"
+    [ngStyle]="imageUrl ? { backgroundImage: 'url(' + imageUrl + ')' } : {}">
+    <span *ngIf="!imageUrl">Upload an Image</span>
+  </div>
+  <input #inputFile type="file" (change)="onFileChanged($event)" hidden />
+</div>
