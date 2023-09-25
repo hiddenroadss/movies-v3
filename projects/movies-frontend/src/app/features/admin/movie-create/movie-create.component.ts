@@ -97,10 +97,20 @@ export class MovieCreateComponent implements OnInit {
   }
 
   useSuggestion(movie: MovieFromDb) {
-    this.movieForm.patchValue({
-      title: movie.title,
-      releaseDate: movie.release_date,
-      description: movie.overview,
+    this.moviesService.findPoster(movie.poster_path).subscribe(poster => {
+      const newFile = new File(
+        [poster],
+        `${movie.poster_path.split('/').at(-1)}`,
+        {
+          type: poster.type,
+        }
+      );
+      this.onImageSelected(newFile);
+      this.movieForm.patchValue({
+        title: movie.title,
+        releaseDate: movie.release_date,
+        description: movie.overview,
+      });
     });
   }
 }

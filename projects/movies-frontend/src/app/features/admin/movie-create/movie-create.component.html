@@ -60,7 +60,8 @@
 
   <!-- Add this line where you want the image upload control -->
   <app-image-upload
-    (imageSelected)="onImageSelected($event)"></app-image-upload>
+    (imageSelected)="onImageSelected($event)"
+    [inputImageFile]="posterFile"></app-image-upload>
 
   <button
     mat-raised-button

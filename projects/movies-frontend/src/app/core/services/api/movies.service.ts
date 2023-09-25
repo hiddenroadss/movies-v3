@@ -50,4 +50,11 @@ export class MoviesService {
       formData
     );
   }
+
+  findPoster(relativePath: string): Observable<Blob> {
+    return this.http.get<Blob>(
+      `https://image.tmdb.org/t/p/w500${relativePath}`,
+      { responseType: 'blob' as 'json' }
+    );
+  }
 }

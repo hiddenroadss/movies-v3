@@ -79,6 +79,7 @@ export class MovieDashboardComponent implements OnInit {
       });
   }
 
+  //TODO: fix deleting all movies in table
   deleteMovie(movieId?: number): void {
     if (movieId) {
       this.moviesService
