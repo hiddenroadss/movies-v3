@@ -8,7 +8,6 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
-  Res,
   BadRequestException,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';

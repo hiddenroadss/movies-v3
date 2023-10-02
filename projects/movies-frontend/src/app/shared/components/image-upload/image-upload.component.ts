@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageUploadComponent implements OnChanges {
-  @Input() inputImageFile: File | null = null; // Add this line
+  @Input() inputImageFile: File | null = null;
   @ViewChild('inputFile') inputFile!: ElementRef<HTMLInputElement>;
   @Output() imageSelected = new EventEmitter<File>();
 
