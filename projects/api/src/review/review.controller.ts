@@ -12,7 +12,7 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('review')
+@Controller('reviews')
 @ApiTags('Reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
@@ -26,6 +26,11 @@ export class ReviewController {
   @Get()
   findAll() {
     return this.reviewService.findAll();
+  }
+
+  @Get('/by/:movieId')
+  findAllByMovie(@Param('movieId') movieId: string) {
+    return this.reviewService.findAllByMovie(+movieId);
   }
 
   @Get(':id')

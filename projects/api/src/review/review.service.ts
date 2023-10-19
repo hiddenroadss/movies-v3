@@ -22,6 +22,13 @@ export class ReviewService {
     return this.prisma.review.findMany({ include: { movie: true } });
   }
 
+  findAllByMovie(movieId: number) {
+    return this.prisma.review.findMany({
+      where: { movieId },
+      include: { movie: true },
+    });
+  }
+
   findOne(id: number) {
     return this.prisma.review.findUnique({
       where: { id },

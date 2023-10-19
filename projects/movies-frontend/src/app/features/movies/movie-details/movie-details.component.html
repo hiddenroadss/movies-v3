@@ -1,13 +1,73 @@
-<mat-card *ngIf="movie$ | async as movie">
-  <mat-card-header>
-    <mat-card-title>{{ movie.title }}</mat-card-title>
-    <mat-card-subtitle>Directed by: {{ movie.director }}</mat-card-subtitle>
-  </mat-card-header>
-  <img
-    mat-card-image
-    [src]="'http://localhost:3000/' + movie.poster"
-    alt="{{ movie.title }} poster" />
-  <mat-card-content>
-    <p>Release Date: {{ movie.releaseDate }}</p>
-  </mat-card-content>
-</mat-card>
+<div *ngIf="movie$ | async as movie" class="movie-details">
+  <div class="movie-info">
+    <div class="movie-poster">
+      <img
+        [src]="'http://localhost:3000/' + movie.poster"
+        alt="{{ movie.title }} poster" />
+    </div>
+
+    <div class="movie-content">
+      <h1>{{ movie.title }}</h1>
+      <h2>Directed by: {{ movie.director }}</h2>
+      <p><strong>Release Date:</strong>{{ movie.releaseDate | date }}</p>
+      <p><strong>Description:</strong>{{ movie.description }}</p>
+    </div>
+  </div>
+
+  <div class="reviews">
+    <h3>Reviews:</h3>
+    <div class="reviews-list">
+      <div
+        class="review-item"
+        *ngFor="let review of reviews$ | async; let i = index">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ review.title }}</mat-card-title>
+            <mat-card-subtitle>{{ review.createdAt | date }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ review.body }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div class="add-review-form">
+    <h3>Add Review:</h3>
+    <form>
+      <mat-form-field class="add-review-field">
+        <mat-label>Title</mat-label>
+        <input
+          id="review-title"
+          [(ngModel)]="review.title"
+          name="title"
+          matInput />
+      </mat-form-field>
+
+      <mat-form-field class="add-review-field">
+        <mat-label>Rating</mat-label>
+        <input
+          id="review-rating"
+          type="number"
+          [(ngModel)]="review.rating"
+          name="rating"
+          matInput />
+      </mat-form-field>
+
+      <mat-form-field class="add-review-field">
+        <mat-label>Body</mat-label>
+        <textarea
+          id="review-body"
+          [(ngModel)]="review.body"
+          name="body"
+          matInput>
+        </textarea>
+      </mat-form-field>
+      <div class="submit-button">
+        <button mat-raised-button color="primary" (click)="addReview()">
+          Add Review
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
