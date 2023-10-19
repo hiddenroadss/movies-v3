@@ -8,3 +8,18 @@
     Add Movies
   </button>
 </div>
+<div *ngIf="recommendations$ | async as recommendations">
+  <h3>Search Results:</h3>
+  <div class="recommendation-grid">
+    <mat-card class="recommendation-item" *ngFor="let movie of recommendations">
+      <!-- Uncomment this line if you want to include the poster image -->
+      <img mat-card-image [src]="movie[1]" alt="{{ movie[0].title }} poster" />
+      <mat-card-header>
+        <mat-card-title>{{ movie[0].title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ movie[0].overview }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

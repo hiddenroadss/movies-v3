@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -36,8 +37,13 @@ export class MovieController {
   }
 
   @Get('find/:title')
-  async findMovieInDb(@Param('title') movieTitle: string) {
-    return this.moviesDbService.fetchMovieData(movieTitle);
+  async findMovieInDb(
+    @Param('title') movieTitle: string,
+    @Query('takeFirstOnly') takeFirstOnly?: string
+  ) {
+    const booleanValue =
+      takeFirstOnly && takeFirstOnly.toLowerCase() === 'true';
+    return this.moviesDbService.fetchMovieData(movieTitle, booleanValue);
   }
 
   @Get()
