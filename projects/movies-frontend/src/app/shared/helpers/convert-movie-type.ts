@@ -8,6 +8,7 @@ export function mapMovieFromDbToMovie(
     director: '', // Set this to the appropriate value, as it's not available in MovieFromDb
     releaseDate: new Date(movieFromDb.release_date),
     poster: movieFromDb.poster_path,
+    description: movieFromDb.overview
   };
 }
 
