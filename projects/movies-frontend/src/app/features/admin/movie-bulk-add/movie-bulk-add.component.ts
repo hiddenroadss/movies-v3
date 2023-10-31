@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MoviesService } from '@core/services/api/movies.service';
 import { MaterialModule } from '@shared/material.module';
 import { Movie, MovieFromDb } from '@shared/types';
 import {
+  EMPTY,
   Observable,
+  catchError,
   concatMap,
   forkJoin,
   from,
   map,
   of,
+  share,
   switchMap,
+  tap,
   toArray,
 } from 'rxjs';
 
@@ -20,42 +24,53 @@ import {
   templateUrl: './movie-bulk-add.component.html',
   styleUrls: ['./movie-bulk-add.component.scss'],
   standalone: true,
-  imports: [FormsModule, MaterialModule, CommonModule],
+  imports: [ReactiveFormsModule, MaterialModule, CommonModule],
 })
 export class MovieBulkAddComponent {
-  movieTitles = '';
-  recommendations$: Observable<[MovieFromDb, string][]> | undefined;
+  movieTitles =  new FormControl('', {nonNullable: true})
+  recommendations: {movies: MovieFromDb[]; selected: MovieFromDb; selectedPoster: string}[] | undefined;
+  suggestions: MovieFromDb[] | null = null;
 
-  constructor(private movieService: MoviesService) {}
+  constructor(private movieService: MoviesService, private cdr: ChangeDetectorRef) {}
 
   addMovies(): void {
-    const titles = this.movieTitles
+    const titles = this.movieTitles.value
       .split(/[\n,]+/)
       .map(title => title.trim().replace(/(^["']|["']$)/g, ''))
       .filter(title => title.length > 0);
 
     if (titles.length === 0) {
-      this.movieTitles = '';
+      this.movieTitles.setValue('');
       return;
     }
     const movies: Pick<Movie, 'title'>[] = titles.map(title => ({ title }));
-    this.recommendations$ = from(movies).pipe(
+    from(movies).pipe(
       concatMap(movie =>
         this.movieService
-          .getMovieInfoFirst(movie.title)
+          .getMovieInfo(movie.title)
           .pipe(
-            switchMap(movie =>
+            switchMap(movies =>
               forkJoin([
-                of(movie),
+                of(movies),
+                of(movies[0]),
                 this.movieService
-                  .findPoster(movie.poster_path)
-                  .pipe(map(blob => URL.createObjectURL(blob))),
-              ])
+                  .findPoster(movies[0].poster_path)
+                  .pipe(map(blob => URL.createObjectURL(blob)), catchError(() => EMPTY)),
+              ]).pipe(
+                map(([movies, selected, selectedPoster]) => ({
+                  movies,
+                  selected,
+                  selectedPoster
+                }))
+              )
             )
           )
       ),
-      toArray()
-    );
+      toArray(),
+    ).subscribe(data => {
+      this.recommendations = data;
+      this.cdr.detectChanges();
+    });
     // this.movieService.addMovies(movies).subscribe(() => {
     //   this.movieTitles = '';
     // });
@@ -74,5 +89,22 @@ export class MovieBulkAddComponent {
     //     description: movie.overview,
     //   });
     // });
+  }
+
+  useSuggestion(updatedMovie: MovieFromDb, oldMovie: MovieFromDb) {
+    this.movieService.findPoster(updatedMovie.poster_path).subscribe(blob => {
+      const url = URL.createObjectURL(blob)
+      const index = this.recommendations!.findIndex(recc => recc.selected === oldMovie);
+      this.recommendations?.splice(index, 1, {...this.recommendations[index], selected: updatedMovie, selectedPoster: url})
+      this.cdr.detectChanges();
+    });
+  }
+
+  closeMenu() {
+    this.suggestions = null;
+  }
+
+  openMenu(movie: {movies: MovieFromDb[]; selected: MovieFromDb; selectedPoster: string}) {
+    this.suggestions = movie.movies;
   }
 }

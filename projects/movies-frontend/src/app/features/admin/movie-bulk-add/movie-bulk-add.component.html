@@ -2,24 +2,44 @@
   <h2>Add Movies</h2>
   <mat-form-field appearance="outline">
     <mat-label>Movie Titles (one per line)</mat-label>
-    <textarea matInput [(ngModel)]="movieTitles" rows="10"></textarea>
+    <textarea matInput [formControl]="movieTitles" rows="10"></textarea>
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="addMovies()">
     Add Movies
   </button>
 </div>
-<div *ngIf="recommendations$ | async as recommendations">
+<div *ngIf="recommendations">
   <h3>Search Results:</h3>
   <div class="recommendation-grid">
+    <!-- TODO: add null image handling -->
     <mat-card class="recommendation-item" *ngFor="let movie of recommendations">
-      <!-- Uncomment this line if you want to include the poster image -->
-      <img mat-card-image [src]="movie[1]" alt="{{ movie[0].title }} poster" />
+      <img mat-card-image [src]="movie.selectedPoster" alt="{{ movie.selected.title }} poster" />
       <mat-card-header>
-        <mat-card-title>{{ movie[0].title }}</mat-card-title>
+        <mat-card-title>{{ movie.selected.title }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>{{ movie[0].overview }}</p>
+        <p>{{ movie.selected.overview }}</p>
       </mat-card-content>
+
+      <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      class="menu-button" (click)="openMenu(movie)">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+      <mat-menu #menu="matMenu" (closed)="closeMenu()">
+              <ng-container *ngIf="suggestions" >
+                <div
+                *ngFor="let suggestion of suggestions"
+                (click)="useSuggestion(suggestion, movie.selected)">
+                {{ suggestion.title }}
+                <span *ngIf="suggestion.release_date"
+                  >| {{ suggestion.release_date | date }}</span
+                >
+          </div>
+              </ng-container>
+      </mat-menu>
     </mat-card>
   </div>
 </div>
