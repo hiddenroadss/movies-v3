@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Movie, MovieFromDb } from '@shared/types';
+import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
 
 @Injectable({
   providedIn: 'root',
@@ -41,10 +42,6 @@ export class MoviesService {
 
   deleteMovie(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
-  addMovies(movies: Pick<Movie, 'title'>[]): Observable<Movie[]> {
-    return this.http.post<Movie[]>(this.apiUrl + '/bulk', movies);
   }
 
   uploadPoster(poster: File): Observable<{ file: string }> {

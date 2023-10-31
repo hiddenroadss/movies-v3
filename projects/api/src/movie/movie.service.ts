@@ -44,7 +44,7 @@ export class MovieService {
     });
   }
 
-  async createBulk(createMovieDtos: Pick<CreateMovieDto, 'title'>[]) {
+  async createBulk(createMovieDtos: Omit<CreateMovieDto, 'tags'>[]) {
     return Promise.all(
       createMovieDtos.map(movie => this.prisma.movie.create({ data: movie }))
     );

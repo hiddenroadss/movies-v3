@@ -1,21 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
+import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
 import { MaterialModule } from '@shared/material.module';
 import { Movie, MovieFromDb } from '@shared/types';
 import {
-  EMPTY,
-  Observable,
-  catchError,
   concatMap,
   forkJoin,
   from,
   map,
   of,
-  share,
   switchMap,
-  tap,
   toArray,
 } from 'rxjs';
 
@@ -28,12 +25,12 @@ import {
 })
 export class MovieBulkAddComponent {
   movieTitles =  new FormControl('', {nonNullable: true})
-  recommendations: {movies: MovieFromDb[]; selected: MovieFromDb; selectedPoster: string}[] | undefined;
+  recommendations: {movies: MovieFromDb[]; selected: MovieFromDb; selectedPosterUrl: string; selectedPosterBlob: Blob}[] | undefined;
   suggestions: MovieFromDb[] | null = null;
 
-  constructor(private movieService: MoviesService, private cdr: ChangeDetectorRef) {}
+  constructor(private movieService: MoviesService, private cdr: ChangeDetectorRef, private router: Router) {}
 
-  addMovies(): void {
+  findSuggestions(): void {
     const titles = this.movieTitles.value
       .split(/[\n,]+/)
       .map(title => title.trim().replace(/(^["']|["']$)/g, ''))
@@ -55,12 +52,13 @@ export class MovieBulkAddComponent {
                 of(movies[0]),
                 this.movieService
                   .findPoster(movies[0].poster_path)
-                  .pipe(map(blob => URL.createObjectURL(blob)), catchError(() => EMPTY)),
+                 
               ]).pipe(
-                map(([movies, selected, selectedPoster]) => ({
+                map(([movies, selected, selectedPosterBlob]) => ({
                   movies,
                   selected,
-                  selectedPoster
+                  selectedPosterBlob,
+                  selectedPosterUrl: URL.createObjectURL(selectedPosterBlob)
                 }))
               )
             )
@@ -71,31 +69,14 @@ export class MovieBulkAddComponent {
       this.recommendations = data;
       this.cdr.detectChanges();
     });
-    // this.movieService.addMovies(movies).subscribe(() => {
-    //   this.movieTitles = '';
-    // });
-    // this.moviesService.findPoster(movie.poster_path).subscribe(poster => {
-    //   const newFile = new File(
-    //     [poster],
-    //     `${movie.poster_path.split('/').at(-1)}`,
-    //     {
-    //       type: poster.type,
-    //     }
-    //   );
-    //   this.onImageSelected(newFile);
-    //   this.movieForm.patchValue({
-    //     title: movie.title,
-    //     releaseDate: movie.release_date,
-    //     description: movie.overview,
-    //   });
-    // });
+   
   }
 
   useSuggestion(updatedMovie: MovieFromDb, oldMovie: MovieFromDb) {
     this.movieService.findPoster(updatedMovie.poster_path).subscribe(blob => {
       const url = URL.createObjectURL(blob)
       const index = this.recommendations!.findIndex(recc => recc.selected === oldMovie);
-      this.recommendations?.splice(index, 1, {...this.recommendations[index], selected: updatedMovie, selectedPoster: url})
+      this.recommendations?.splice(index, 1, {...this.recommendations[index], selected: updatedMovie, selectedPosterUrl: url, selectedPosterBlob: blob})
       this.cdr.detectChanges();
     });
   }
@@ -104,7 +85,30 @@ export class MovieBulkAddComponent {
     this.suggestions = null;
   }
 
-  openMenu(movie: {movies: MovieFromDb[]; selected: MovieFromDb; selectedPoster: string}) {
+  openMenu(movie: {movies: MovieFromDb[]; selected: MovieFromDb; selectedPosterUrl: string; selectedPosterBlob: Blob}) {
     this.suggestions = movie.movies;
+  }
+
+  addMovies() {
+    const moviesAndPosters = this.recommendations!.map(({selected, selectedPosterBlob}) => ({selected, selectedPosterBlob}));
+    from(moviesAndPosters).pipe(
+      concatMap(({selected, selectedPosterBlob}) => {
+        const file = new File( [selectedPosterBlob],
+          `${selected.poster_path.split('/').at(-1)}`,
+          {
+            type: selectedPosterBlob.type,
+          })
+        return this.movieService.uploadPoster(file).pipe(
+          concatMap(poster => {
+            const mapped = mapMovieFromDbToMovie(selected);
+            return this.movieService.createMovie({...mapped, poster: poster.file})
+          })
+        )
+      }),
+      toArray()
+    ).subscribe(() => {
+      this.movieTitles.setValue('');
+      this.router.navigateByUrl('..')
+    })
   }
 }

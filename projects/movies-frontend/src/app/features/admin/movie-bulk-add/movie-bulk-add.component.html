@@ -4,8 +4,8 @@
     <mat-label>Movie Titles (one per line)</mat-label>
     <textarea matInput [formControl]="movieTitles" rows="10"></textarea>
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="addMovies()">
-    Add Movies
+  <button mat-raised-button color="primary" (click)="findSuggestions()">
+    Find Suggestions
   </button>
 </div>
 <div *ngIf="recommendations">
@@ -13,7 +13,7 @@
   <div class="recommendation-grid">
     <!-- TODO: add null image handling -->
     <mat-card class="recommendation-item" *ngFor="let movie of recommendations">
-      <img mat-card-image [src]="movie.selectedPoster" alt="{{ movie.selected.title }} poster" />
+      <img mat-card-image [src]="movie.selectedPosterUrl" alt="{{ movie.selected.title }} poster" />
       <mat-card-header>
         <mat-card-title>{{ movie.selected.title }}</mat-card-title>
       </mat-card-header>
@@ -42,4 +42,5 @@
       </mat-menu>
     </mat-card>
   </div>
+  <button (click)="addMovies()">Add Movies</button>
 </div>
