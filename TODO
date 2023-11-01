@@ -1,1 +1,19 @@
-# fix husky for monorepo work
+- fix husky for monorepo work
+- refactor MovieBulkAddComponent
+- refactor MovieCreateComponent
+- fix MovieBulkAddComponent tests
+- add loader component 
+- add forms validation
+- add authentication frontend
+- add authentication backend
+- read about & implement database back-up
+- add tailwind & style guide
+
+
+## Priority
+- refactor MovieBulkAddComponent
+- refactor MovieCreateComponent
+- add forms validation
+- fix MovieBulkAddComponent tests
+- read about & implement database back-up
+- add tailwind & style guide
