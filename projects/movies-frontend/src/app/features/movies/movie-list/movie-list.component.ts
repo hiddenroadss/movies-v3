@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
+import { MovieCardComponent } from '@shared/components/movie-card/movie-card.component';
 import { MaterialModule } from '@shared/material.module';
 import { Movie } from '@shared/types';
 import { combineLatest, defer, map, startWith } from 'rxjs';
@@ -14,7 +15,7 @@ import { combineLatest, defer, map, startWith } from 'rxjs';
   styleUrls: ['./movie-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MaterialModule, CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [MaterialModule, CommonModule, RouterModule, ReactiveFormsModule, MovieCardComponent],
 })
 export class MovieListComponent {
   movies$ = this.movieService.getMovies();
@@ -49,10 +50,7 @@ export class MovieListComponent {
     );
   }
 
-  onImageError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'assets/images/default_poster.jpg';
-  }
+  
 
   trackById(index: number, movie: Movie) {
     return movie.id;

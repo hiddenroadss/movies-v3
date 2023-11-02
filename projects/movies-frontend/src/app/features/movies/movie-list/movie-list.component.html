@@ -10,41 +10,14 @@
     </mat-form-field>
   </div>
 
-  <mat-card
-    *ngFor="let movie of displayedMovies$ | async; trackBy: trackById"
-    class="movie-card"
-    data-test="movie-card">
-    <img
-      mat-card-image
-      [src]="'http://localhost:3000/' + movie.poster"
-      alt="{{ movie.title }} poster"
-      (error)="onImageError($event)" />
-    <mat-card-header>
-      <mat-card-title data-test="movie-title">{{ movie.title }}</mat-card-title>
-      <mat-card-subtitle data-test="movie-director"
-        >Directed by: {{ movie.director }}</mat-card-subtitle
-      >
-    </mat-card-header>
-    <mat-card-content>
-      <p data-test="movie-release-date">
-        Release Date: {{ movie.releaseDate | date }}
-      </p>
-      <p>
-        Tags:
-        <mat-chip-listbox>
-          <mat-chip *ngFor="let tag of movie.tags">{{ tag.name }}</mat-chip>
-        </mat-chip-listbox>
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button
-        mat-raised-button
-        color="primary"
-        [routerLink]="['/movies/details', movie.id]">
-        View Details
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <div class="flex flex-wrap">
+    <app-movie-card
+  *ngFor="let movie of displayedMovies$ | async; trackBy: trackById"
+  [movie]="movie"
+  data-test="movie-card"
+  class="basis-1/4"
+></app-movie-card>
+  </div>
   <mat-paginator
     [length]="(movies$ | async)?.length"
     [pageSize]="pageSize"

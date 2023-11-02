@@ -1,70 +1,81 @@
-<div *ngIf="movie$ | async as movie" class="movie-details">
-  <div class="movie-info">
-    <div class="movie-poster">
+<div *ngIf="movie$ | async as movie">
+  <div class="flex">
+    <div class="movie-poster w-1/3">
       <img
+        class="w-full object-cover"
         [src]="'http://localhost:3000/' + movie.poster"
-        alt="{{ movie.title }} poster" />
+        alt="{{ movie.title }} poster"
+      />
     </div>
 
-    <div class="movie-content">
-      <h1>{{ movie.title }}</h1>
-      <h2>Directed by: {{ movie.director }}</h2>
-      <p><strong>Release Date:</strong>{{ movie.releaseDate | date }}</p>
-      <p><strong>Description:</strong>{{ movie.description }}</p>
+    <div class="pl-8">
+      <h1 class="text-3xl font-bold mb-4">{{ movie.title }}</h1>
+      <h2 class="text-2xl font-semibold mb-4">Directed by: {{ movie.director }}</h2>
+      <p class="mb-4">
+        <strong class="font-semibold">Release Date:</strong>
+        {{ movie.releaseDate | date }}
+      </p>
+      <p>
+        <strong class="font-semibold">Description:</strong>{{ movie.description }}
+      </p>
     </div>
   </div>
 
-  <div class="reviews">
-    <h3>Reviews:</h3>
-    <div class="reviews-list">
+  <div class="mt-8">
+    <h3 class="text-2xl font-semibold mb-4">Reviews:</h3>
+    <div class="">
       <div
-        class="review-item"
-        *ngFor="let review of reviews$ | async; let i = index">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{ review.title }}</mat-card-title>
-            <mat-card-subtitle>{{ review.createdAt | date }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ review.body }}</p>
-          </mat-card-content>
-        </mat-card>
+        class="mb-4"
+        *ngFor="let review of reviews$ | async; let i = index"
+      >
+        <div class="bg-white shadow-md p-6 rounded-lg">
+          <h4 class="text-xl font-bold mb-2">{{ review.title }}</h4>
+          <h5 class="text-gray-600 font-semibold mb-4">
+            {{ review.createdAt | date }}
+          </h5>
+          <p class="text-gray-700">{{ review.body }}</p>
+        </div>
       </div>
     </div>
   </div>
-  <div class="add-review-form">
-    <h3>Add Review:</h3>
+  <div class="mt-8">
+    <h3 class="text-2xl font-semibold mb-4">Add Review:</h3>
     <form>
-      <mat-form-field class="add-review-field">
-        <mat-label>Title</mat-label>
+      <div class="mb-4">
+        <label class="block mb-2 font-semibold" for="review-title">Title</label>
         <input
           id="review-title"
+          class="w-full px-4 py-2 border rounded-md"
           [(ngModel)]="review.title"
           name="title"
-          matInput />
-      </mat-form-field>
+        />
+      </div>
 
-      <mat-form-field class="add-review-field">
-        <mat-label>Rating</mat-label>
+      <div class="mb-4">
+        <label class="block mb-2 font-semibold" for="review-rating">Rating</label>
         <input
           id="review-rating"
+          class="w-full px-4 py-2 border rounded-md"
           type="number"
           [(ngModel)]="review.rating"
           name="rating"
-          matInput />
-      </mat-form-field>
+        />
+      </div>
 
-      <mat-form-field class="add-review-field">
-        <mat-label>Body</mat-label>
+      <div class="mb-4">
+        <label class="block mb-2 font-semibold" for="review-body">Body</label>
         <textarea
           id="review-body"
+          class="w-full px-4 py-2 border rounded-md"
           [(ngModel)]="review.body"
           name="body"
-          matInput>
-        </textarea>
-      </mat-form-field>
+        ></textarea>
+      </div>
       <div class="submit-button">
-        <button mat-raised-button color="primary" (click)="addReview()">
+        <button
+          class="bg-blue-500 text-white py-2 px-4 rounded-md"
+          (click)="addReview()"
+        >
           Add Review
         </button>
       </div>

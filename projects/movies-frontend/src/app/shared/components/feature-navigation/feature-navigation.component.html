@@ -1,12 +1,32 @@
-<!-- admin-navigation.component.html -->
-
 <nav>
-  <a
-    routerLink="/admin/dashboard"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    >Dashboard</a
-  >
-  <a routerLink="/admin/create" routerLinkActive="active">Create Movie</a>
-  <a routerLink="/admin/add-bulk" routerLinkActive="active">Create Bulk</a>
+  <ul class="list-none flex items-center space-x-4">
+    <li>
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="text-blue-600 font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-gray-700 font-semibold hover:text-blue-600"
+      >
+        Dashboard
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/admin/create"
+        routerLinkActive="text-blue-600 font-semibold"
+        class="text-gray-700 font-semibold hover:text-blue-600"
+      >
+        Create Movie
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/admin/add-bulk"
+        routerLinkActive="text-blue-600 font-semibold"
+        class="text-gray-700 font-semibold hover:text-blue-600"
+      >
+        Create Bulk
+      </a>
+    </li>
+  </ul>
 </nav>
