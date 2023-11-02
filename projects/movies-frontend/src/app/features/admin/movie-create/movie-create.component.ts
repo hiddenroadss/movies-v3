@@ -12,13 +12,17 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  of,
   switchMap,
+  iif
 } from 'rxjs';
 import { Movie, MovieFromDb, Tag } from '@shared/types';
 import { MaterialModule } from '@shared/material.module';
 import { CommonModule } from '@angular/common';
 import { ImageUploadComponent } from '@shared/components/image-upload/image-upload.component';
 import { HttpEventType } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
 
 @Component({
   selector: 'app-movie-create',
@@ -48,7 +52,7 @@ export class MovieCreateComponent implements OnInit {
   id: number | undefined;
   posterFile: File | null = null;
 
-  constructor(private moviesService: MoviesService) {}
+  constructor(private moviesService: MoviesService, private router: Router) {}
 
   ngOnInit() {
     this.suggestions$ = this.movieForm.controls.title.valueChanges.pipe(
@@ -63,48 +67,33 @@ export class MovieCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.movieForm.valid) {
-      const movieData: Partial<Movie> = {
-        ...this.movieForm.getRawValue(),
-        tags: this.tags,
-        releaseDate: new Date(this.movieForm.controls.releaseDate.value),
-      };
-
-      if (this.posterFile) {
-        // Upload the image
-        this.moviesService
-          .uploadPoster(this.posterFile)
-          .pipe(
-            switchMap(poster => {
-              return this.moviesService.createMovie({
-                ...movieData,
-                poster: poster.file,
-              });
-            })
-          )
-          .subscribe(data => {
-            // this.router.navigate(['/admin/dashboard']);
-            // Navigate to the movie list or display a success message
-          });
-      } else {
-        // Call createMovie without uploading a poster
-        this.moviesService.createMovie(movieData).subscribe(data => {
-          // this.router.navigate(['/admin/dashboard']);
-          // Navigate to the movie list or display a success message
-        });
-      }
+    if (this.movieForm.invalid) {
+      return;
     }
+    const movieData: Partial<Movie> = {
+      ...this.movieForm.getRawValue(),
+      tags: this.tags,
+      releaseDate: new Date(this.movieForm.controls.releaseDate.value),
+    };
+
+    const posterUpload$ = iif(() => !!this.posterFile, this.moviesService
+    .uploadPoster(this.posterFile!), of(null))
+
+    posterUpload$.pipe(
+      switchMap(poster => {
+        const movieDataWithPoster = poster
+          ? { ...movieData, poster: poster.file }
+          : movieData;
+        return this.moviesService.createMovie(movieDataWithPoster);
+      })
+    ).subscribe(() => {
+      this.router.navigate(['/admin/dashboard']);
+    });
   }
 
   useSuggestion(movie: MovieFromDb) {
     this.moviesService.findPoster(movie.poster_path).subscribe(poster => {
-      const newFile = new File(
-        [poster],
-        `${movie.poster_path.split('/').at(-1)}`,
-        {
-          type: poster.type,
-        }
-      );
+      const newFile = createFileFromBlob(poster, movie)
       this.onImageSelected(newFile);
       this.movieForm.patchValue({
         title: movie.title,

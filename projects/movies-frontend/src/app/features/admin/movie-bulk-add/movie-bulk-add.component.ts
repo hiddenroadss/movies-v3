@@ -4,6 +4,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
 import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
+import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
+import { extractTitles } from '@shared/helpers/extract-titles';
 import { MaterialModule } from '@shared/material.module';
 import { Movie, MovieFromDb } from '@shared/types';
 import {
@@ -31,38 +33,15 @@ export class MovieBulkAddComponent {
   constructor(private movieService: MoviesService, private cdr: ChangeDetectorRef, private router: Router) {}
 
   findSuggestions(): void {
-    const titles = this.movieTitles.value
-      .split(/[\n,]+/)
-      .map(title => title.trim().replace(/(^["']|["']$)/g, ''))
-      .filter(title => title.length > 0);
+    const titles = extractTitles(this.movieTitles.value);
 
     if (titles.length === 0) {
       this.movieTitles.setValue('');
       return;
     }
-    const movies: Pick<Movie, 'title'>[] = titles.map(title => ({ title }));
-    from(movies).pipe(
-      concatMap(movie =>
-        this.movieService
-          .getMovieInfo(movie.title)
-          .pipe(
-            switchMap(movies =>
-              forkJoin([
-                of(movies),
-                of(movies[0]),
-                this.movieService
-                  .findPoster(movies[0].poster_path)
-                 
-              ]).pipe(
-                map(([movies, selected, selectedPosterBlob]) => ({
-                  movies,
-                  selected,
-                  selectedPosterBlob,
-                  selectedPosterUrl: URL.createObjectURL(selectedPosterBlob)
-                }))
-              )
-            )
-          )
+    from(titles).pipe(
+      concatMap(title =>
+       this._fetchMovieInfo(title)
       ),
       toArray(),
     ).subscribe(data => {
@@ -72,11 +51,11 @@ export class MovieBulkAddComponent {
    
   }
 
+
   useSuggestion(updatedMovie: MovieFromDb, oldMovie: MovieFromDb) {
     this.movieService.findPoster(updatedMovie.poster_path).subscribe(blob => {
       const url = URL.createObjectURL(blob)
-      const index = this.recommendations!.findIndex(recc => recc.selected === oldMovie);
-      this.recommendations?.splice(index, 1, {...this.recommendations[index], selected: updatedMovie, selectedPosterUrl: url, selectedPosterBlob: blob})
+      this._updateRecommendations(oldMovie, updatedMovie, url, blob);
       this.cdr.detectChanges();
     });
   }
@@ -90,25 +69,55 @@ export class MovieBulkAddComponent {
   }
 
   addMovies() {
-    const moviesAndPosters = this.recommendations!.map(({selected, selectedPosterBlob}) => ({selected, selectedPosterBlob}));
-    from(moviesAndPosters).pipe(
-      concatMap(({selected, selectedPosterBlob}) => {
-        const file = new File( [selectedPosterBlob],
-          `${selected.poster_path.split('/').at(-1)}`,
-          {
-            type: selectedPosterBlob.type,
-          })
-        return this.movieService.uploadPoster(file).pipe(
-          concatMap(poster => {
-            const mapped = mapMovieFromDbToMovie(selected);
-            return this.movieService.createMovie({...mapped, poster: poster.file})
-          })
-        )
-      }),
+    if (!this.recommendations) {
+      return;
+    }
+    from(this.recommendations).pipe(
+      concatMap(({selected, selectedPosterBlob}) => this._uploadMovieWithPoster(selectedPosterBlob, selected)),
       toArray()
     ).subscribe(() => {
       this.movieTitles.setValue('');
       this.router.navigateByUrl('..')
     })
+  }
+
+  private _fetchMovieInfo(title: string) {
+    return  this.movieService
+    .getMovieInfo(title)
+    .pipe(
+      switchMap(movies =>
+        forkJoin([
+          of(movies),
+          of(movies[0]),
+          this.movieService
+            .findPoster(movies[0].poster_path)
+           
+        ]).pipe(
+          map(([movies, selected, selectedPosterBlob]) => ({
+            movies,
+            selected,
+            selectedPosterBlob,
+            selectedPosterUrl: URL.createObjectURL(selectedPosterBlob)
+          }))
+        )
+      )
+    )
+  }
+
+
+  private _updateRecommendations(oldMovie: MovieFromDb, updatedMovie: MovieFromDb, url: string, blob: Blob) {
+    const index = this.recommendations!.findIndex(recc => recc.selected === oldMovie);
+    this.recommendations?.splice(index, 1, { ...this.recommendations[index], selected: updatedMovie, selectedPosterUrl: url, selectedPosterBlob: blob });
+  }
+
+  private _uploadMovieWithPoster(selectedPosterBlob: Blob, selected: MovieFromDb) {
+    const file = createFileFromBlob(selectedPosterBlob, selected);
+    const mapped = mapMovieFromDbToMovie(selected);
+
+    return this.movieService.uploadPoster(file).pipe(
+      concatMap(poster => {
+        return this.movieService.createMovie({ ...mapped, poster: poster.file });
+      })
+    );
   }
 }
