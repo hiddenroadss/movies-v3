@@ -1,4 +1,4 @@
-<div class="bg-blue-500 py-3 px-6 flex items-center justify-between">
+<div class="bg-primary-500 py-3 px-6 flex items-center justify-between">
   <div class="flex items-center">
     <span class="text-white text-xl font-semibold ml-6">MoviesSpace</span>
   </div>
@@ -34,4 +34,16 @@
       </a>
     </li>
   </ul>
+  <div class="ml-4">
+    <label for="theme-switcher" class="text-white">Theme:</label>
+    <select
+      id="theme-switcher"
+      class="ml-2 py-1 px-2 bg-white text-gray-700 rounded-md"
+      (change)="changeTheme($event)"
+    >
+      <option value="base">Base</option>
+      <option value="theme2">Theme 2</option>
+      <option value="theme3">Theme 3</option>
+    </select>
+  </div>
 </div>

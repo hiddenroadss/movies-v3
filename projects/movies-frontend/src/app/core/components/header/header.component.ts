@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterLink } from '@angular/router';
 
@@ -11,4 +11,8 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+  changeTheme(e: any) {
+    this.document.body.setAttribute('data-theme', e.target.value)
+  }
 }
