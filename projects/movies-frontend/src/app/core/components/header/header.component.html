@@ -1,6 +1,37 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="toggleSidenav.emit()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My App</span>
-</mat-toolbar>
+<div class="bg-blue-500 py-3 px-6 flex items-center justify-between">
+  <div class="flex items-center">
+    <span class="text-white text-xl font-semibold ml-6">MoviesSpace</span>
+  </div>
+  <ul class="list-none flex items-center space-x-6">
+    <li>
+      <a
+        [routerLink]="['/movies']"
+        routerLinkActive="text-white border-b-2 border-white"
+        class="text-white py-2 px-4 border-b-2 border-transparent hover:border-white"
+      >
+        <mat-icon>movie</mat-icon>
+        <span class="ml-2">Movies</span>
+      </a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['/admin']"
+        routerLinkActive="text-white border-b-2 border-white"
+        class="text-white py-2 px-4 border-b-2 border-transparent hover:border-white"
+      >
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span class="ml-2">Admin</span>
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/visual"
+        routerLinkActive="text-white border-b-2 border-white"
+        class="text-white py-2 px-4 border-b-2 border-transparent hover:border-white"
+      >
+        <mat-icon>admin_panel_settings</mat-icon>
+        Tag Statistics
+      </a>
+    </li>
+  </ul>
+</div>
