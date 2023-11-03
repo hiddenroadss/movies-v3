@@ -34,16 +34,37 @@
       </a>
     </li>
   </ul>
-  <div class="ml-4">
-    <label for="theme-switcher" class="text-white">Theme:</label>
-    <select
-      id="theme-switcher"
-      class="ml-2 py-1 px-2 bg-white text-gray-700 rounded-md"
-      (change)="changeTheme($event)"
+  <!-- Add this inside the existing header block -->
+<div class="relative inline-block">
+  <button
+    class="text-white hover:text-gray-400"
+    (click)="themeMenuVisible = !themeMenuVisible"
+  >
+    <mat-icon>brush</mat-icon>
+  </button>
+
+  <div
+    class="absolute right-0 mt-2 w-40 bg-white text-gray-700 rounded shadow-md"
+    *ngIf="themeMenuVisible"
+  >
+    <button
+      class="block px-4 py-2 w-full text-left"
+      (click)="changeTheme('body')"
     >
-      <option value="base">Base</option>
-      <option value="theme2">Theme 2</option>
-      <option value="theme3">Theme 3</option>
-    </select>
+      Base
+    </button>
+    <button
+      class="block px-4 py-2 w-full text-left"
+      (click)="changeTheme('theme2')"
+    >
+      Theme 2
+    </button>
+    <button
+      class="block px-4 py-2 w-full text-left"
+      (click)="changeTheme('theme3')"
+    >
+      Theme 3
+    </button>
   </div>
+</div>
 </div>

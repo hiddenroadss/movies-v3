@@ -11,8 +11,9 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  themeMenuVisible = false;
   constructor(@Inject(DOCUMENT) private document: Document) {}
-  changeTheme(e: any) {
-    this.document.body.setAttribute('data-theme', e.target.value)
+  changeTheme(theme: string) {
+    this.document.body.setAttribute('data-theme', theme)
   }
 }
