@@ -3,6 +3,8 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
+import { ButtonDirective } from '@shared/directives/button.directive';
+import { InputDirective } from '@shared/directives/input.directive';
 import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
 import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
 import { extractTitles } from '@shared/helpers/extract-titles';
@@ -23,7 +25,7 @@ import {
   templateUrl: './movie-bulk-add.component.html',
   styleUrls: ['./movie-bulk-add.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, CommonModule],
+  imports: [ReactiveFormsModule, MaterialModule, CommonModule, InputDirective, ButtonDirective],
 })
 export class MovieBulkAddComponent {
   movieTitles =  new FormControl('', {nonNullable: true})

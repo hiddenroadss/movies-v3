@@ -1,46 +1,53 @@
 <div>
   <h2>Add Movies</h2>
-  <mat-form-field appearance="outline">
-    <mat-label>Movie Titles (one per line)</mat-label>
-    <textarea matInput [formControl]="movieTitles" rows="10"></textarea>
-  </mat-form-field>
-  <button mat-raised-button color="primary" (click)="findSuggestions()">
+  <div>
+    <label>Movie titles (one per line)</label>
+    <textarea [formControl]="movieTitles"  appInput ></textarea>
+  </div>
+  <button appButton  [disabled]="!movieTitles.value"  (click)="findSuggestions()">
     Find Suggestions
   </button>
 </div>
 <div *ngIf="recommendations">
   <h3>Search Results:</h3>
-  <div class="recommendation-grid">
-    <!-- TODO: add null image handling -->
-    <mat-card class="recommendation-item" *ngFor="let movie of recommendations">
-      <img mat-card-image [src]="movie.selectedPosterUrl" alt="{{ movie.selected.title }} poster" />
-      <mat-card-header>
-        <mat-card-title>{{ movie.selected.title }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ movie.selected.overview }}</p>
-      </mat-card-content>
-
-      <button
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      class="menu-button" (click)="openMenu(movie)">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-
-      <mat-menu #menu="matMenu" (closed)="closeMenu()">
-              <ng-container *ngIf="suggestions" >
-                <div
-                *ngFor="let suggestion of suggestions"
-                (click)="useSuggestion(suggestion, movie.selected)">
-                {{ suggestion.title }}
-                <span *ngIf="suggestion.release_date"
-                  >| {{ suggestion.release_date | date }}</span
-                >
-          </div>
-              </ng-container>
-      </mat-menu>
-    </mat-card>
+  <div>
+    <div
+  class="bg-white rounded-lg overflow-hidden shadow-md mb-6"
+  *ngFor="let movie of recommendations"
+>
+  <img
+    class="w-full h-48 object-cover object-center"
+    [src]="movie.selectedPosterUrl"
+    alt="{{ movie.selected.title }} poster"
+  />
+  <div class="p-5">
+    <h3 class="text-lg font-semibold">{{ movie.selected.title }}</h3>
+    <p class="mt-2 text-sm text-gray-700">{{ movie.selected.overview }}</p>
   </div>
-  <button (click)="addMovies()"mat-raised-button color="primary">Add Movies</button>
+
+  <button
+    class="text-primary-500 hover:text-primary-600 p-3"
+    [matMenuTriggerFor]="menu"
+    (click)="openMenu(movie)"
+  >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu" (closed)="closeMenu()">
+    <ng-container *ngIf="suggestions">
+      <div
+        class="p-2 cursor-pointer hover:bg-gray-200"
+        *ngFor="let suggestion of suggestions"
+        (click)="useSuggestion(suggestion, movie.selected)"
+      >
+        {{ suggestion.title }}
+        <span *ngIf="suggestion.release_date">
+          | {{ suggestion.release_date | date }}
+        </span>
+      </div>
+    </ng-container>
+  </mat-menu>
+</div>
+  </div>
+  <button (click)="addMovies()" appButton>Add Movies</button>
 </div>
