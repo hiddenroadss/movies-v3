@@ -1,15 +1,11 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  ViewChild,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 //TODO: add click event and read about accessibility
 
@@ -20,45 +16,48 @@ import { CommonModule } from '@angular/common';
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class ImageUploadComponent implements OnChanges {
-  @Input() inputImageFile: File | null = null;
-  @ViewChild('inputFile') inputFile!: ElementRef<HTMLInputElement>;
-  @Output() imageSelected = new EventEmitter<File>();
-
-  imageUrl: string | ArrayBuffer | null = null;
-
-  //TODO: add setter insted of ngOnChanges
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['inputImageFile'] && this.inputImageFile) {
-      this.updateImage(this.inputImageFile);
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: ImageUploadComponent,
+      multi: true
     }
+  ]
+})
+export class ImageUploadComponent implements ControlValueAccessor {
+  private cdr = inject(ChangeDetectorRef);
+  value: File | null = null;
+
+   onChange: (value: File | null) => void = () => {};
+
+   onTouched: () => void = () => {};
+
+  get imageUrl() {
+    return this.value ? URL.createObjectURL(this.value) : '';
+  }
+
+
+  writeValue(obj: any): void {
+    this.value = obj;
+    this.cdr.markForCheck();
+  }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
   }
 
   onFileChanged(event: Event): void {
     const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
+    const file = target.files?.[0] || null;
 
-    if (file) {
-      this.updateImage(file);
-    }
+    this.writeValue(file);
+    this.onChange(file); 
+    this.onTouched(); 
   }
 
-  openInputFile(): void {
-    this.inputFile.nativeElement.click();
-  }
-
-  resetImage(): void {
-    this.imageUrl = null;
-    this.inputFile.nativeElement.value = '';
-  }
-
-  private updateImage(file: File): void {
-    const reader = new FileReader();
-    reader.onload = e => {
-      this.imageUrl = e.target!.result;
-      this.imageSelected.emit(file);
-    };
-    reader.readAsDataURL(file);
-  }
 }

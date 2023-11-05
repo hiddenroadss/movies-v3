@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -57,9 +57,9 @@ export class MovieCreateComponent implements OnInit {
   tags: Tag[] = [];
   suggestions$!: Observable<MovieFromDb[]>;
   id: number | undefined;
-  posterFile: File | null = null;
+  posterControl = new FormControl<File | null>(null)
 
-  constructor(private moviesService: MoviesService, private router: Router) {}
+  constructor(private moviesService: MoviesService, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.suggestions$ = this.movieForm.controls.title.valueChanges.pipe(
@@ -67,10 +67,6 @@ export class MovieCreateComponent implements OnInit {
       distinctUntilChanged(),
       switchMap(title => this.moviesService.getMovieInfo(title))
     );
-  }
-
-  onImageSelected(file: File) {
-    this.posterFile = file;
   }
 
   onSubmit(): void {
@@ -83,8 +79,8 @@ export class MovieCreateComponent implements OnInit {
       releaseDate: new Date(this.movieForm.controls.releaseDate.value),
     };
 
-    const posterUpload$ = iif(() => !!this.posterFile, this.moviesService
-    .uploadPoster(this.posterFile!), of(null))
+    const posterUpload$ = iif(() => !!this.posterControl.value, this.moviesService
+    .uploadPoster(this.posterControl.value!), of(null))
 
     posterUpload$.pipe(
       switchMap(poster => {
@@ -101,7 +97,7 @@ export class MovieCreateComponent implements OnInit {
   useSuggestion(movie: MovieFromDb) {
     this.moviesService.findPoster(movie.poster_path).subscribe(poster => {
       const newFile = createFileFromBlob(poster, movie)
-      this.onImageSelected(newFile);
+      this.posterControl.setValue(newFile);
       this.movieForm.patchValue({
         title: movie.title,
         releaseDate: movie.release_date,

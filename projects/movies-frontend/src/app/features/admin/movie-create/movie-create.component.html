@@ -60,8 +60,8 @@
 
   <!-- TODO: Make it regular control -->
   <app-image-upload
-    (imageSelected)="onImageSelected($event)"
-    [inputImageFile]="posterFile"></app-image-upload>
+    [formControl]="posterControl"
+   ></app-image-upload>
 
   <button
     appButton
