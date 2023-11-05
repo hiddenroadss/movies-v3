@@ -2,9 +2,10 @@
   <h2>Add Movies</h2>
   <div>
     <label>Movie titles (one per line)</label>
-    <textarea [formControl]="movieTitles"  appInput ></textarea>
+    <textarea [formControl]="movieTitlesControl"  appInput ></textarea>
+    <app-input-errors *ngIf="movieTitlesControl.dirty" [errors]="movieTitlesControl.errors"></app-input-errors>
   </div>
-  <button appButton  [disabled]="!movieTitles.value"  (click)="findSuggestions()">
+  <button appButton  [disabled]="movieTitlesControl.invalid"  (click)="findSuggestions()">
     Find Suggestions
   </button>
 </div>

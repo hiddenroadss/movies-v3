@@ -25,6 +25,7 @@ import { Router } from '@angular/router';
 import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
 import { InputDirective } from '@shared/directives/input.directive';
 import { ButtonDirective } from '@shared/directives/button.directive';
+import { InputErrorsComponent } from '@shared/components/input-errors/input-errors.component';
 
 @Component({
   selector: 'app-movie-create',
@@ -38,7 +39,8 @@ import { ButtonDirective } from '@shared/directives/button.directive';
     CommonModule,
     ImageUploadComponent,
     InputDirective,
-    ButtonDirective
+    ButtonDirective,
+    InputErrorsComponent
   ],
 })
 export class MovieCreateComponent implements OnInit {

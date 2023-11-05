@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
+import { InputErrorsComponent } from '@shared/components/input-errors/input-errors.component';
 import { ButtonDirective } from '@shared/directives/button.directive';
 import { InputDirective } from '@shared/directives/input.directive';
 import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
@@ -25,20 +26,20 @@ import {
   templateUrl: './movie-bulk-add.component.html',
   styleUrls: ['./movie-bulk-add.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, CommonModule, InputDirective, ButtonDirective],
+  imports: [ReactiveFormsModule, MaterialModule, CommonModule, InputDirective, ButtonDirective, InputErrorsComponent],
 })
 export class MovieBulkAddComponent {
-  movieTitles =  new FormControl('', {nonNullable: true})
+  movieTitlesControl =  new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.minLength(2)]})
   recommendations: {movies: MovieFromDb[]; selected: MovieFromDb; selectedPosterUrl: string; selectedPosterBlob: Blob}[] | undefined;
   suggestions: MovieFromDb[] | null = null;
 
   constructor(private movieService: MoviesService, private cdr: ChangeDetectorRef, private router: Router) {}
 
   findSuggestions(): void {
-    const titles = extractTitles(this.movieTitles.value);
+    const titles = extractTitles(this.movieTitlesControl.value);
 
     if (titles.length === 0) {
-      this.movieTitles.setValue('');
+      this.movieTitlesControl.setValue('');
       return;
     }
     from(titles).pipe(
@@ -78,7 +79,7 @@ export class MovieBulkAddComponent {
       concatMap(({selected, selectedPosterBlob}) => this._uploadMovieWithPoster(selectedPosterBlob, selected)),
       toArray()
     ).subscribe(() => {
-      this.movieTitles.setValue('');
+      this.movieTitlesControl.setValue('');
       this.router.navigateByUrl('..')
     })
   }
