@@ -3,10 +3,10 @@
 <h2>Create a new movie</h2>
 
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
-  <mat-form-field>
+  <div>
     <mat-label>Title</mat-label>
     <input
-      matInput
+      appInput
       [matAutocomplete]="titleAutocomplete"
       formControlName="title" />
     <mat-autocomplete #titleAutocomplete="matAutocomplete">
@@ -20,26 +20,26 @@
         >
       </mat-option>
     </mat-autocomplete>
-  </mat-form-field>
+  </div>
 
-  <mat-form-field>
+  <div>
     <mat-label>Director</mat-label>
-    <input matInput formControlName="director" />
-  </mat-form-field>
+    <input appInput formControlName="director" />
+  </div>
 
-  <mat-form-field>
+  <div>
     <mat-label>Release Date</mat-label>
     <input
-      matInput
+      appInput
       [matDatepicker]="releaseDatePicker"
       formControlName="releaseDate" />
     <mat-datepicker-toggle
       matSuffix
       [for]="releaseDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #releaseDatePicker></mat-datepicker>
-  </mat-form-field>
+  </div>
 
-  <!-- <mat-form-field>
+  <!-- <div>
     <mat-label>Tags</mat-label>
     <mat-chip-grid #chipList>
       <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">{{
@@ -47,25 +47,23 @@
       }}</mat-chip>
     </mat-chip-grid>
     <input
-      matInput
+      appInput
       [matChipInputFor]="chipList"
       [matChipInputAddOnBlur]="true"
       (matChipInputTokenEnd)="addTag($event)" />
-  </mat-form-field> -->
+  </div> -->
 
-  <mat-form-field>
+  <div>
     <mat-label>Description</mat-label>
-    <textarea matInput formControlName="description"></textarea>
-  </mat-form-field>
+    <textarea appInput formControlName="description"></textarea>
+  </div>
 
-  <!-- Add this line where you want the image upload control -->
   <app-image-upload
     (imageSelected)="onImageSelected($event)"
     [inputImageFile]="posterFile"></app-image-upload>
 
   <button
-    mat-raised-button
-    color="primary"
+    appButton
     type="submit"
     [disabled]="movieForm.invalid">
     Create Movie

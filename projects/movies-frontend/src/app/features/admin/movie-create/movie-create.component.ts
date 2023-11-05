@@ -23,6 +23,8 @@ import { ImageUploadComponent } from '@shared/components/image-upload/image-uplo
 import { HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
+import { InputDirective } from '@shared/directives/input.directive';
+import { ButtonDirective } from '@shared/directives/button.directive';
 
 @Component({
   selector: 'app-movie-create',
@@ -35,6 +37,8 @@ import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
     ReactiveFormsModule,
     CommonModule,
     ImageUploadComponent,
+    InputDirective,
+    ButtonDirective
   ],
 })
 export class MovieCreateComponent implements OnInit {
