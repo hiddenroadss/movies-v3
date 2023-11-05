@@ -26,6 +26,7 @@ import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
 import { InputDirective } from '@shared/directives/input.directive';
 import { ButtonDirective } from '@shared/directives/button.directive';
 import { InputErrorsComponent } from '@shared/components/input-errors/input-errors.component';
+import { DynamicValidatorMessageDirective } from '@shared/directives/dynamic-validator-message.directive';
 
 @Component({
   selector: 'app-movie-create',
@@ -40,7 +41,7 @@ import { InputErrorsComponent } from '@shared/components/input-errors/input-erro
     ImageUploadComponent,
     InputDirective,
     ButtonDirective,
-    InputErrorsComponent
+    DynamicValidatorMessageDirective
   ],
 })
 export class MovieCreateComponent implements OnInit {

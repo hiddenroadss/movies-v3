@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
 import { InputErrorsComponent } from '@shared/components/input-errors/input-errors.component';
 import { ButtonDirective } from '@shared/directives/button.directive';
+import { DynamicValidatorMessageDirective } from '@shared/directives/dynamic-validator-message.directive';
 import { InputDirective } from '@shared/directives/input.directive';
 import { mapMovieFromDbToMovie } from '@shared/helpers/convert-movie-type';
 import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
@@ -26,7 +27,7 @@ import {
   templateUrl: './movie-bulk-add.component.html',
   styleUrls: ['./movie-bulk-add.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, CommonModule, InputDirective, ButtonDirective, InputErrorsComponent],
+  imports: [ReactiveFormsModule, MaterialModule, CommonModule, InputDirective, ButtonDirective, DynamicValidatorMessageDirective],
 })
 export class MovieBulkAddComponent {
   movieTitlesControl =  new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.minLength(2)]})

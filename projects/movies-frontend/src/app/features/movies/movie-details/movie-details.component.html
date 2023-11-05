@@ -48,7 +48,6 @@
           appInput
           formControlName="title"
         />
-        <app-input-errors *ngIf="reviewForm.get('title')?.dirty" [errors]="reviewForm.get('title')?.errors"></app-input-errors>
       </div>
 
       <div class="mb-4">
@@ -59,7 +58,6 @@
           type="number"
           formControlName="rating"
         />
-        <app-input-errors *ngIf="reviewForm.get('rating')?.dirty" [errors]="reviewForm.get('rating')?.errors"></app-input-errors>
 
       </div>
 
@@ -70,7 +68,6 @@
           appInput
           formControlName="body"
         ></textarea>
-        <app-input-errors *ngIf="reviewForm.get('body')?.dirty" [errors]="reviewForm.get('body')?.errors"></app-input-errors>
 
       </div>
       <div>

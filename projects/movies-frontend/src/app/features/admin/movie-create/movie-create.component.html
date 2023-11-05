@@ -20,13 +20,11 @@
         >
       </mat-option>
     </mat-autocomplete>
-    <app-input-errors *ngIf="movieForm.get('title')?.dirty" [errors]="movieForm.get('title')?.errors"></app-input-errors>
   </div>
 
   <div>
     <mat-label>Director</mat-label>
     <input appInput formControlName="director" />
-    <app-input-errors *ngIf="movieForm.get('director')?.dirty" [errors]="movieForm.get('director')?.errors"></app-input-errors>
   </div>
 
   <div>
@@ -39,7 +37,6 @@
       matSuffix
       [for]="releaseDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #releaseDatePicker></mat-datepicker>
-    <app-input-errors *ngIf="movieForm.get('releaseDate')?.dirty" [errors]="movieForm.get('releaseDate')?.errors"></app-input-errors>
   </div>
 
   <!-- <div>
@@ -59,7 +56,6 @@
   <div>
     <mat-label>Description</mat-label>
     <textarea appInput formControlName="description"></textarea>
-    <app-input-errors *ngIf="movieForm.get('description')?.dirty" [errors]="movieForm.get('description')?.errors"></app-input-errors>
   </div>
 
   <!-- TODO: Make it regular control -->

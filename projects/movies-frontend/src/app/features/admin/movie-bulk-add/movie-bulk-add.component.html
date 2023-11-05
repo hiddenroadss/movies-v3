@@ -3,7 +3,6 @@
   <div>
     <label>Movie titles (one per line)</label>
     <textarea [formControl]="movieTitlesControl"  appInput ></textarea>
-    <app-input-errors *ngIf="movieTitlesControl.dirty" [errors]="movieTitlesControl.errors"></app-input-errors>
   </div>
   <button appButton  [disabled]="movieTitlesControl.invalid"  (click)="findSuggestions()">
     Find Suggestions

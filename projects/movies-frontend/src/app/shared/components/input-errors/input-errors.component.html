@@ -1,3 +1,3 @@
-<div *ngFor="let error of errors | keyvalue" class="text-red-500">
-    {{ errorsMap[error.key]}}
+<div *ngFor="let error of errors | keyvalue; trackBy: trackByKey" class="text-red-500">
+    {{ error.key | errorMessage: error.value}}
 </div>
