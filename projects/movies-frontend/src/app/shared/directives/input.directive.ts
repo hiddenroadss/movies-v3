@@ -1,21 +1,19 @@
-import { Directive } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 import { ElementRef, HostBinding } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[appInput]',
   standalone: true
 })
 export class InputDirective {
-
-  constructor(private elementRef: ElementRef<HTMLInputElement>) { }
+  public ngControl = inject(NgControl, {self: true})
 
   @HostBinding('class') get styles() {
-    if(this.elementRef.nativeElement.tagName === 'INPUT') {
-      return 'w-full py-2 px-4 border border-gray-300 rounded-md'
-    } else if (this.elementRef.nativeElement.tagName === 'TEXTAREA') {
-      return 'w-full py-2 px-4 border border-gray-300 rounded-md'
-    }
-    return '';
+    const classes = 'border-gray-300 border py-2 px-4 w-full rounded-md';
+    const bg = this.ngControl.control?.errors !== null && this.ngControl.control?.touched ? 'border-red-300' : 'border-gray-300';
+
+    return `${classes} ${bg}`
   }
 
 }

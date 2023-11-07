@@ -41,16 +41,16 @@
   <div class="mt-8">
     <h3 class="text-2xl font-semibold mb-4">Add Review:</h3>
     <form [formGroup]="reviewForm">
-      <div class="mb-4">
-        <label class="block mb-2 font-semibold" for="review-title">Title</label>
+      <app-form-field class="mb-4">
+        <label #label class="block mb-2 font-semibold" for="review-title">Title</label>
         <input
           id="review-title"
           appInput
           formControlName="title"
         />
-      </div>
+      </app-form-field>
 
-      <div class="mb-4">
+      <app-form-field class="mb-4">
         <label class="block mb-2 font-semibold" for="review-rating">Rating</label>
         <input
           id="review-rating"
@@ -59,9 +59,9 @@
           formControlName="rating"
         />
 
-      </div>
+      </app-form-field>
 
-      <div class="mb-4">
+      <app-form-field class="mb-4">
         <label class="block mb-2 font-semibold" for="review-body">Body</label>
         <textarea
           id="review-body"
@@ -69,7 +69,7 @@
           formControlName="body"
         ></textarea>
 
-      </div>
+      </app-form-field>
       <div>
         <button
           appButton

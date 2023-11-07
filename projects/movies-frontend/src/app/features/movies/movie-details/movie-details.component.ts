@@ -4,9 +4,11 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
 import { ReviewService } from '@core/services/api/review.service';
+import { FormFieldComponent } from '@shared/components/form-field/form-field.component';
 import { ButtonDirective } from '@shared/directives/button.directive';
 import { DynamicValidatorMessageDirective } from '@shared/directives/dynamic-validator-message.directive';
 import { InputDirective } from '@shared/directives/input.directive';
+import { LabelDirective } from '@shared/directives/label.directive';
 import { MaterialModule } from '@shared/material.module';
 import { defer } from 'rxjs';
 
@@ -15,7 +17,7 @@ import { defer } from 'rxjs';
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.scss'],
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, ButtonDirective, InputDirective, DynamicValidatorMessageDirective],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, ButtonDirective, InputDirective, DynamicValidatorMessageDirective, FormFieldComponent, LabelDirective],
 })
 export class MovieDetailsComponent {
   movie$ = this.moviesService.getMovieById(
