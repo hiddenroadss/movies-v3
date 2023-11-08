@@ -52,12 +52,7 @@
 
       <ts-form-field class="mb-4">
         <label class="block mb-2 font-semibold" for="review-rating">Rating</label>
-        <input
-          id="review-rating"
-          appInput
-          type="number"
-          formControlName="rating"
-        />
+        <app-stars-rating formControlName="rating"></app-stars-rating>
 
       </ts-form-field>
 

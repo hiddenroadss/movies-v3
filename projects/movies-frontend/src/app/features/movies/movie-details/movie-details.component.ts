@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
 import { ReviewService } from '@core/services/api/review.service';
+import { StarsRatingComponent } from '@shared/components/stars-rating/stars-rating.component';
 import { ButtonModule, FormFieldModule } from 'projects/ui-components/src/public-api';
 import { defer } from 'rxjs';
 
@@ -12,7 +13,7 @@ import { defer } from 'rxjs';
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormFieldModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, FormFieldModule, ButtonModule, StarsRatingComponent],
 })
 export class MovieDetailsComponent {
   movie$ = this.moviesService.getMovieById(
