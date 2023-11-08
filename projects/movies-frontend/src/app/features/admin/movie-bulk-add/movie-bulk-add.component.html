@@ -1,9 +1,9 @@
 <div>
   <h2>Add Movies</h2>
-  <div>
+  <ts-form-field>
     <label>Movie titles (one per line)</label>
     <textarea [formControl]="movieTitlesControl"  appInput ></textarea>
-  </div>
+  </ts-form-field>
   <button appButton  [disabled]="movieTitlesControl.invalid"  (click)="findSuggestions()">
     Find Suggestions
   </button>

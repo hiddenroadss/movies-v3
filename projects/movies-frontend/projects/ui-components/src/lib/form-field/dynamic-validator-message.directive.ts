@@ -1,7 +1,7 @@
 import { Directive, inject, ViewContainerRef, ComponentRef, ElementRef } from '@angular/core';
 import { NgControl, NgModel } from '@angular/forms';
-import { InputErrorsComponent } from '@shared/components/input-errors/input-errors.component';
 import { Subscription, from, fromEvent, merge, skip, startWith } from 'rxjs';
+import { InputErrorsComponent } from './input-errors/input-errors.component';
 
 @Directive({
   selector: '[formControl],[formControlName],[ngModel]',

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { CommonModule, KeyValue, KeyValuePipe } from '@angular/common';
 import { ValidationErrors } from '@angular/forms';
-import { ErrorMessagePipe } from '@shared/pipes/error-message.pipe';
+import { ErrorMessagePipe } from '../pipes/error-message.pipe';
 
 @Component({
   selector: 'app-input-errors',

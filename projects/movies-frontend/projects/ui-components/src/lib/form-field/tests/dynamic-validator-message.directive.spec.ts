@@ -1,4 +1,4 @@
-import { DynamicValidatorMessageDirective } from './dynamic-validator-message.directive';
+import { DynamicValidatorMessageDirective } from '../dynamic-validator-message.directive';
 
 describe('DynamicValidatorMessageDirective', () => {
   it('should create an instance', () => {

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
-import { VALIDATION_ERROR_MESSAGES } from '@shared/components/input-errors/validation-error-messages.token';
+import { VALIDATION_ERROR_MESSAGES } from '../input-errors/validation-error-messages.token';
 
 @Pipe({
   name: 'errorMessage',

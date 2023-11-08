@@ -1,15 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MoviesService } from '@core/services/api/movies.service';
 import { ReviewService } from '@core/services/api/review.service';
-import { FormFieldComponent } from '@shared/components/form-field/form-field.component';
-import { ButtonDirective } from '@shared/directives/button.directive';
-import { DynamicValidatorMessageDirective } from '@shared/directives/dynamic-validator-message.directive';
-import { InputDirective } from '@shared/directives/input.directive';
-import { LabelDirective } from '@shared/directives/label.directive';
-import { MaterialModule } from '@shared/material.module';
+import { ButtonModule, FormFieldModule } from 'projects/ui-components/src/public-api';
 import { defer } from 'rxjs';
 
 @Component({
@@ -17,7 +12,7 @@ import { defer } from 'rxjs';
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.scss'],
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, ButtonDirective, InputDirective, DynamicValidatorMessageDirective, FormFieldComponent, LabelDirective],
+  imports: [CommonModule, ReactiveFormsModule, FormFieldModule, ButtonModule],
 })
 export class MovieDetailsComponent {
   movie$ = this.moviesService.getMovieById(

@@ -1,4 +1,4 @@
-import { ErrorMessagePipe } from './error-message.pipe';
+import { ErrorMessagePipe } from '../pipes/error-message.pipe';
 
 describe('ErrorMessagePipe', () => {
   it('create an instance', () => {

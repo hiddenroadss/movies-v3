@@ -20,13 +20,9 @@ import { Movie, MovieFromDb, Tag } from '@shared/types';
 import { MaterialModule } from '@shared/material.module';
 import { CommonModule } from '@angular/common';
 import { ImageUploadComponent } from '@shared/components/image-upload/image-upload.component';
-import { HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { createFileFromBlob } from '@shared/helpers/create-file-from-blob';
-import { InputDirective } from '@shared/directives/input.directive';
-import { ButtonDirective } from '@shared/directives/button.directive';
-import { InputErrorsComponent } from '@shared/components/input-errors/input-errors.component';
-import { DynamicValidatorMessageDirective } from '@shared/directives/dynamic-validator-message.directive';
+import { ButtonModule, FormFieldModule } from 'projects/ui-components/src/public-api';
 
 @Component({
   selector: 'app-movie-create',
@@ -39,9 +35,8 @@ import { DynamicValidatorMessageDirective } from '@shared/directives/dynamic-val
     ReactiveFormsModule,
     CommonModule,
     ImageUploadComponent,
-    InputDirective,
-    ButtonDirective,
-    DynamicValidatorMessageDirective
+    FormFieldModule, 
+    ButtonModule
   ],
 })
 export class MovieCreateComponent implements OnInit {
