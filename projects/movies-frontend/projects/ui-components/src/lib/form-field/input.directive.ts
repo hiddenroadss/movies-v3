@@ -3,7 +3,7 @@ import { ElementRef, HostBinding } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[appInput]',
+  selector: 'input,textarea',
   standalone: true
 })
 export class InputDirective {

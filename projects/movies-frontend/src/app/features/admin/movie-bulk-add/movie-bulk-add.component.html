@@ -2,7 +2,7 @@
   <h2>Add Movies</h2>
   <ts-form-field>
     <label>Movie titles (one per line)</label>
-    <textarea [formControl]="movieTitlesControl"  appInput ></textarea>
+    <textarea [formControl]="movieTitlesControl" ></textarea>
   </ts-form-field>
   <button appButton  [disabled]="movieTitlesControl.invalid"  (click)="findSuggestions()">
     Find Suggestions

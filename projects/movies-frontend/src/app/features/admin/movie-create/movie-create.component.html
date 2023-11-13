@@ -6,7 +6,6 @@
   <div>
     <mat-label>Title</mat-label>
     <input
-      appInput
       [matAutocomplete]="titleAutocomplete"
       formControlName="title" />
     <mat-autocomplete #titleAutocomplete="matAutocomplete">
@@ -24,13 +23,12 @@
 
   <div>
     <mat-label>Director</mat-label>
-    <input appInput formControlName="director" />
+    <input formControlName="director" />
   </div>
 
   <div>
     <mat-label>Release Date</mat-label>
     <input
-      appInput
       [matDatepicker]="releaseDatePicker"
       formControlName="releaseDate" />
     <mat-datepicker-toggle
@@ -47,7 +45,7 @@
       }}</mat-chip>
     </mat-chip-grid>
     <input
-      appInput
+
       [matChipInputFor]="chipList"
       [matChipInputAddOnBlur]="true"
       (matChipInputTokenEnd)="addTag($event)" />
@@ -55,7 +53,7 @@
 
   <div>
     <mat-label>Description</mat-label>
-    <textarea appInput formControlName="description"></textarea>
+    <textarea formControlName="description"></textarea>
   </div>
 
   <!-- TODO: Make it regular control -->
