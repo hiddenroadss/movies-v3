@@ -39,11 +39,8 @@ export class MovieController {
   @Get('find/:title')
   async findMovieInDb(
     @Param('title') movieTitle: string,
-    @Query('takeFirstOnly') takeFirstOnly?: string
   ) {
-    const booleanValue =
-      takeFirstOnly && takeFirstOnly.toLowerCase() === 'true';
-    return this.moviesDbService.fetchMovieData(movieTitle, booleanValue);
+    return this.moviesDbService.fetchMovieData(movieTitle);
   }
 
   @Get()

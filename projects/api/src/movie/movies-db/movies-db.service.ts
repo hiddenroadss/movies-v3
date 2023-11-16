@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { Observable, filter, map } from 'rxjs';
+import { EMPTY, Observable, catchError, filter, map } from 'rxjs';
 
 @Injectable()
 export class MoviesDbService {
@@ -14,7 +14,7 @@ export class MoviesDbService {
     private configService: ConfigService
   ) {}
 
-  fetchMovieData(title: string, takeFirstOnly = false): Observable<any> {
+  fetchMovieData(title: string): Observable<any> {
     return this.httpService
       .get(`${this.BASE_URL}/search/movie`, {
         params: {
@@ -23,9 +23,8 @@ export class MoviesDbService {
         },
       })
       .pipe(
-        filter(response => response.data && response.data.results.length),
         map(response =>
-          takeFirstOnly ? response.data.results[0] : response.data.results
+          response.data?.results || []
         )
       );
   }

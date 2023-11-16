@@ -34,7 +34,7 @@ model Review {
   title     String
   body      String
   rating    Int
-  movie     Movie    @relation(fields: [movieId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
   movieId   Int
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
