@@ -16,7 +16,14 @@
   [movie]="movie"
   data-test="movie-card"
   class="basis-1/4"
-></app-movie-card>
+>
+<button
+        class="bg-primary-500 text-white py-2 px-4 rounded-md"
+        [routerLink]="['/movies/details', movie.id]"
+      >
+        View Details
+      </button>
+</app-movie-card>
   </div>
   <mat-paginator
     [length]="(movies$ | async)?.length"

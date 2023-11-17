@@ -18,6 +18,7 @@ import {
   toArray,
 } from 'rxjs';
 import { ButtonModule, FormFieldModule } from 'projects/ui-components/src/public-api';
+import { MovieCardComponent } from '@shared/components/movie-card/movie-card.component';
 
 @Component({
   selector: 'app-movie-bulk-add',

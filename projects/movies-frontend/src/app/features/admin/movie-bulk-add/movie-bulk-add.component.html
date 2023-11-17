@@ -2,7 +2,7 @@
   <h2>Add Movies</h2>
   <ts-form-field>
     <label>Movie titles (one per line)</label>
-    <textarea [formControl]="movieTitlesControl" ></textarea>
+    <textarea [formControl]="movieTitlesControl"></textarea>
   </ts-form-field>
   <button appButton  [disabled]="movieTitlesControl.invalid"  (click)="findSuggestions()">
     Find Suggestions
@@ -10,28 +10,32 @@
 </div>
 <div *ngIf="recommendations">
   <h3>Search Results:</h3>
-  <div>
+  <div class="flex flex-wrap gap-5">
+    <!-- Add movie card here -->
     <div
-  class="bg-white rounded-lg overflow-hidden shadow-md mb-6"
+  class="bg-white rounded-lg overflow-hidden shadow-md mb-6 basis-1/4"
   *ngFor="let movie of recommendations"
 >
   <img
-    class="w-full h-48 object-cover object-center"
+    class="w-full h-[600px] object-cover object-center"
     [src]="movie.selectedPosterUrl"
     alt="{{ movie.selected.title }} poster"
   />
   <div class="p-5">
-    <h3 class="text-lg font-semibold">{{ movie.selected.title }}</h3>
+    <div class="flex justify-between align-middle p-3">
+      <h3 class="text-lg font-semibold">{{ movie.selected.title }}</h3>
+      <button
+      class="text-primary-500 hover:text-primary-600"
+      [matMenuTriggerFor]="menu"
+      (click)="openMenu(movie)"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    </div>
     <p class="mt-2 text-sm text-gray-700">{{ movie.selected.overview }}</p>
   </div>
 
-  <button
-    class="text-primary-500 hover:text-primary-600 p-3"
-    [matMenuTriggerFor]="menu"
-    (click)="openMenu(movie)"
-  >
-    <mat-icon>more_vert</mat-icon>
-  </button>
+ 
 
   <mat-menu #menu="matMenu" (closed)="closeMenu()">
     <ng-container *ngIf="suggestions">
